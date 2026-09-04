@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>РУЛЕТКА-НОМЕРА</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- Глобальные стили ---------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            background: #0b0e1a;
+            color: #e0e6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.4s, color 0.4s;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        body.light {
+            background: #f0f4fa;
+            color: #1a1f2e;
+        }
+
+        /* ---------- Уведомления ---------- */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+            pointer-events: none;
+            width: 100%;
+            max-width: 500px;
+        }
+        .notification {
+            background: rgba(10, 14, 30, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            animation: notifIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), notifOut 0.35s ease 3.7s forwards;
+            pointer-events: auto;
+            width: 100%;
+            border-left: 4px solid #4a9eff;
+            letter-spacing: 0.3px;
+        }
+        .notification.warning { border-left-color: #f1c40f; }
+        .notification.error { border-left-color: #e74c3c; }
+        .notification.info { border-left-color: #4a9eff; }
+        .notification.success { border-left-color: #2ecc71; }
+        @keyframes notifIn {
+            from { opacity: 0; transform: translateY(-30px) scale(0.92); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes notifOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+
+        /* ---------- Основной контейнер ---------- */
+        .app-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1100px;
+            width: 100%;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ---------- Левая панель (улучшения) ---------- */
+        .upgrade-panel {
+            flex: 1 1 240px;
+            min-width: 200px;
+            background: rgba(18, 24, 44, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        body.light .upgrade-panel {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+        .upgrade-panel h3 {
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            color: #4a9eff;
+            opacity: 0.9;
+        }
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.95rem;
+            align-items: center;
+        }
+        body.light .upgrade-item {
+            border-bottom-color: rgba(0, 0, 0, 0.06);
+        }
+        .upgrade-item:last-child { border-bottom: none; }
+        .upgrade-item .label { opacity: 0.8; font-weight: 400; }
+        .upgrade-item .value { font-weight: 600; }
+        .value.active { color: #2ecc71; }
+        .value.inactive { color: #e74c3c; }
+
+        /* ---------- Правая панель (игра) ---------- */
+        .game-panel {
+            flex: 2 1 480px;
+            min-width: 320px;
+            background: rgba(18, 24, 44, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 28px 28px 34px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s, border-color 0.3s;
+            position: relative;
+        }
+        body.light .game-panel {
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(0, 0, 0, 0.06);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ---------- Заголовок ---------- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-size: 1.9rem;
+            margin: 0;
+            color: #4a9eff;
+            text-shadow: 0 0 30px rgba(74, 158, 255, 0.2);
+        }
+
+        /* ---------- Номерной знак ---------- */
+        .plate-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 12px 0 22px;
+        }
+        .plate {
+            background: linear-gradient(145deg, #0a2a4a, #0d3b5e);
+            border-radius: 16px;
+            padding: 18px 32px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 12px 0 #062033, 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 2px solid #e0e6f0;
+            min-width: 280px;
+        }
+        .plate .number-display {
+            font-family: 'Courier New', monospace;
+            font-size: 3.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 6px;
+            text-shadow: 0 2px 0 #00000066;
+            background: #f5f7fa;
+            padding: 6px 24px;
+            border-radius: 10px;
+            color: #0b0e1a;
+            min-width: 240px;
+            text-align: center;
+        }
+        .plate .region-flag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 6px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+            background: #0d4a6e;
+            padding: 0 18px;
+            border-radius: 24px;
+            letter-spacing: 1px;
+        }
+        .plate .region-flag span { font-size: 1.8rem; line-height: 1; }
+
+        /* ---------- Кнопки вращения ---------- */
+        .spin-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            margin-top: 12px;
+        }
+        .spin-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ---------- Стеклянные кнопки (общий стиль) ---------- */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 60px;
+            color: #fff;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            flex: 1 1 auto;
+            min-width: 140px;
+            text-align: center;
+            user-select: none;
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+        }
+        .glass-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .glass-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .glass-btn.letters {
+            background: rgba(108, 92, 231, 0.15);
+            border-color: rgba(108, 92, 231, 0.4);
+        }
+        .glass-btn.letters:hover {
+            background: rgba(108, 92, 231, 0.3);
+        }
+        .glass-btn.digits {
+            background: rgba(74, 158, 255, 0.15);
+            border-color: rgba(74, 158, 255, 0.4);
+        }
+        .glass-btn.digits:hover {
+            background: rgba(74, 158, 255, 0.3);
+        }
+
+        .action-btn {
+            background: transparent;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 60px;
+            color: #fff;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        body.light .glass-btn {
+            color: #1a1f2e;
+            border-color: rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.4);
+            text-shadow: none;
+        }
+        body.light .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+        body.light .glass-btn.letters {
+            background: rgba(108, 92, 231, 0.1);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+        body.light .glass-btn.letters:hover {
+            background: rgba(108, 92, 231, 0.25);
+        }
+        body.light .glass-btn.digits {
+            background: rgba(74, 158, 255, 0.1);
+            border-color: rgba(74, 158, 255, 0.3);
+        }
+        body.light .glass-btn.digits:hover {
+            background: rgba(74, 158, 255, 0.25);
+        }
+        body.light .action-btn {
+            color: #1a1f2e;
+            border-color: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        body.light .action-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* ---------- Баланс и кнопки ---------- */
+        .balance-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .balance {
+            font-size: 1.6rem;
+            font-weight: 300;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 28px;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #e0e6f0;
+        }
+        body.light .balance {
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.06);
+            color: #1a1f2e;
+        }
+        .balance span { font-weight: 600; color: #2ecc71; }
+
+        /* ---------- Модальные окна ---------- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #1a1f30;
+            border-radius: 40px;
+            padding: 32px 36px 36px;
+            max-width: 460px;
+            width: 92%;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            text-align: center;
+            transition: background 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        body.light .modal { background: #f4f6fa; border-color: rgba(0,0,0,0.06); }
+        .modal h2 {
+            font-weight: 300;
+            margin-bottom: 22px;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: #4a9eff;
+        }
+        .modal .close-modal {
+            margin-top: 20px;
+            background: #e74c3c;
+            border: none;
+            color: #fff;
+            padding: 12px 34px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.1s;
+        }
+        .modal .close-modal:active { transform: scale(0.95); }
+
+        /* ---------- Элементы магазина и прокачки ---------- */
+        .shop-item, .upgrade-item-modal, .event-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        body.light .shop-item, body.light .upgrade-item-modal, body.light .event-item {
+            background: rgba(0,0,0,0.04);
+        }
+        .shop-item .desc, .upgrade-item-modal .desc, .event-item .desc {
+            font-size: 1rem;
+            text-align: left;
+        }
+        .shop-item .desc strong, .upgrade-item-modal .desc strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+        .shop-item .desc small, .upgrade-item-modal .desc small {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        .shop-item .price, .upgrade-item-modal .price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2ecc71;
+        }
+        .shop-item .buy-btn, .upgrade-item-modal .buy-btn {
+            background: linear-gradient(135deg, #4a9eff, #2c7cb8);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 8px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: 0.1s;
+        }
+        .shop-item .buy-btn:disabled, .upgrade-item-modal .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shop-item .buy-btn:active:not(:disabled), .upgrade-item-modal .buy-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        /* Промокоды в магазине */
+        .promo-section {
+            margin-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 16px;
+        }
+        .promo-section .promo-input {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .promo-section input {
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid #444;
+            background: #0f1424;
+            color: #e0e6f0;
+            font-size: 1rem;
+            flex: 1 1 140px;
+        }
+        body.light .promo-section input {
+            background: #fff;
+            color: #1a1f2e;
+            border-color: #ccc;
+        }
+        .promo-section button {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border: none;
+            color: #1a1f2e;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .promo-section .promo-message {
+            font-size: 0.9rem;
+            margin-top: 6px;
+            min-height: 1.5rem;
+        }
+
+        /* ---------- Настройки с ползунками громкости ---------- */
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+            margin: 10px 0;
+        }
+        .settings-group label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .settings-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #4a9eff;
+            cursor: pointer;
+        }
+        .settings-group select {
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid #444;
+            background: #0f1424;
+            color: #e0e6f0;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+        body.light .settings-group select {
+            background: #fff;
+            color: #1a1f2e;
+            border-color: #ccc;
+        }
+        .settings-group .theme-btn {
+            background: none;
+            border: 1px solid #444;
+            border-radius: 30px;
+            padding: 4px 16px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #e0e6f0;
+        }
+        body.light .settings-group .theme-btn {
+            border-color: #ccc;
+            color: #1a1f2e;
+        }
+        .settings-group .theme-btn:hover { border-color: #4a9eff; }
+        .settings-group .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+        .settings-group .volume-control input[type="range"] {
+            flex: 1;
+            accent-color: #4a9eff;
+            background: #2a2a40;
+            height: 4px;
+            border-radius: 2px;
+            appearance: none;
+            outline: none;
+        }
+        body.light .settings-group .volume-control input[type="range"] {
+            background: #ccc;
+        }
+        .settings-group .volume-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #4a9eff;
+            cursor: pointer;
+        }
+        .settings-group .volume-control span {
+            min-width: 45px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .reset-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 8px;
+        }
+        .reset-btn:active { transform: scale(0.95); }
+
+        /* ---------- Казино ---------- */
+        .casino-bet-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .casino-bet-area input[type="number"] {
+            padding: 10px;
+            border-radius: 16px;
+            border: 2px solid #444;
+            background: #0f1424;
+            color: #e0e6f0;
+            font-size: 18px;
+            width: 100%;
+            text-align: center;
+            transition: border 0.2s;
+        }
+        body.light .casino-bet-area input[type="number"] {
+            background: #fff;
+            color: #1a1f2e;
+            border-color: #ccc;
+        }
+        .casino-bet-area input[type="number"]:focus { border-color: #4a9eff; outline: none; }
+        .casino-bet-area .bet-info {
+            font-size: 13px;
+            color: #8899b0;
+        }
+        body.light .casino-bet-area .bet-info { color: #445566; }
+        .casino-result {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 10px 0;
+        }
+        .casino-result.win { background: #1a3a2a; color: #2ecc71; }
+        .casino-result.lose { background: #3a1a1a; color: #e74c3c; }
+        .casino-result.jackpot { background: #3a2a1a; color: #f1c40f; }
+        body.light .casino-result.win { background: #d4edda; color: #155724; }
+        body.light .casino-result.lose { background: #f8d7da; color: #721c24; }
+        body.light .casino-result.jackpot { background: #fff3cd; color: #856404; }
+
+        /* ---------- Проверка возраста ---------- */
+        .age-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        .age-buttons button {
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .age-buttons .yes { background: #2ecc71; color: #fff; }
+        .age-buttons .no { background: #e74c3c; color: #fff; }
+        .age-buttons button:active { transform: scale(0.95); }
+        .age-message { font-size: 16px; margin: 10px 0; }
+
+        /* ---------- Рамки (слоты) ---------- */
+        .frame-slots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .frame-slot {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 14px 10px;
+            border: 2px dashed rgba(255,255,255,0.15);
+            text-align: center;
+            transition: 0.2s;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+        body.light .frame-slot {
+            background: rgba(0,0,0,0.03);
+            border-color: rgba(0,0,0,0.1);
+        }
+        .frame-slot.filled {
+            border-style: solid;
+            border-color: #4a9eff;
+            background: rgba(74,158,255,0.08);
+        }
+        .frame-slot .slot-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .frame-slot .slot-region {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        .frame-slot .slot-income {
+            font-size: 0.9rem;
+            color: #2ecc71;
+        }
+        .frame-slot .slot-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 4px;
+        }
+        .frame-slot .slot-actions button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #e0e6f0;
+            transition: 0.1s;
+        }
+        body.light .frame-slot .slot-actions button {
+            color: #1a1f2e;
+            background: rgba(0,0,0,0.05);
+        }
+        .frame-slot .slot-actions button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .frame-slot .slot-actions button.danger {
+            color: #e74c3c;
+        }
+        .frame-slot .slot-actions button.success {
+            color: #2ecc71;
+        }
+        .frame-slot .empty-slot {
+            opacity: 0.4;
+            font-size: 0.9rem;
+        }
+        .frame-slot .save-current-btn {
+            background: #4a9eff;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .frame-slot .save-current-btn:hover {
+            background: #2c7cb8;
+        }
+        .frame-slot .save-current-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ---------- Адаптив ---------- */
+        @media (max-width: 750px) {
+            .app-wrapper { flex-direction: column; align-items: center; }
+            .upgrade-panel { width: 100%; max-width: 480px; }
+            .game-panel { width: 100%; }
+            .frame-slots { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 500px) {
+            .plate .number-display { font-size: 2.4rem; letter-spacing: 2px; min-width: 160px; }
+            .glass-btn { font-size: 1rem; padding: 12px 16px; min-width: 100px; }
+            .spin-row { gap: 10px; }
+            .balance { font-size: 1.3rem; padding: 4px 18px; }
+            .action-btn { padding: 8px 14px; font-size: 0.9rem; }
+            .frame-slots { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер уведомлений -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Основной контейнер -->
+    <div class="app-wrapper">
+        <!-- Левая панель: улучшения -->
+        <div class="upgrade-panel" id="upgradePanel">
+            <h3>⚡ УЛУЧШЕНИЯ</h3>
+            <div class="upgrade-item">
+                <span class="label">Квантовые коллапсы</span>
+                <span class="value" id="spinCountDisplay">0</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Время рекурсии</span>
+                <span class="value" id="spinTimeDisplay">5.0 с</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Турбо-ускоритель</span>
+                <span class="value" id="speedUpgradeDisplay">❌</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Активный бафф</span>
+                <span class="value" id="boostDisplay">❌</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Награда за прокрут</span>
+                <span class="value" id="rewardDisplay">100 ₽</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">ИКС2 НАГРАДА</span>
+                <span class="value" id="doubleRewardDisplay">❌</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Активный ивент</span>
+                <span class="value" id="eventDisplay">Нет</span>
+            </div>
+            <div class="upgrade-item">
+                <span class="label">Доход от рамок</span>
+                <span class="value" id="framesIncomeDisplay">0 ₽/с</span>
+            </div>
+        </div>
+
+        <!-- Правая панель: игра -->
+        <div class="game-panel">
+            <div class="header">
+                <h1>🎲 РУЛЕТКА-НОМЕРА</h1>
+            </div>
+
+            <!-- Номерной знак -->
+            <div class="plate-wrapper">
+                <div class="plate" id="plate">
+                    <div class="number-display" id="numberDisplay">А123ВС</div>
+                    <div class="region-flag">
+                        <span id="regionDisplay">77</span>
+                        <span>🇷🇺</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки вращения -->
+            <div class="spin-area">
+                <div class="spin-row">
+                    <button class="glass-btn letters" id="spinLettersBtn">🔤 КРУТИТЬ БУКВЫ</button>
+                    <button class="glass-btn digits" id="spinDigitsBtn">🔢 КРУТИТЬ ЦИФРЫ</button>
+                </div>
+                <!-- Баланс и кнопки действий -->
+                <div class="balance-row">
+                    <div class="balance">💰 <span id="balanceDisplay">100</span> ₽</div>
+                    <button class="action-btn" id="shopBtn">🏪 Магазин</button>
+                    <button class="action-btn" id="casinoBtn">🎰 Казино</button>
+                    <button class="action-btn" id="upgradeBtn">🔧 Прокачка</button>
+                    <button class="action-btn" id="eventsBtn">🎪 Ивенты</button>
+                    <button class="action-btn" id="framesBtn">🖼️ Рамки</button>
+                    <button class="action-btn" id="settingsBtn">⚙️ Настройки</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно магазина -->
+    <div class="modal-overlay" id="shopModal">
+        <div class="modal">
+            <h2>🏪 МАГАЗИН</h2>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>🚀 Ускоритель ×3</strong>
+                    <small>Вращение в 3 раза быстрее на 5 минут</small>
+                </div>
+                <div>
+                    <div class="price" id="priceBoost3">10 000 ₽</div>
+                    <button class="buy-btn" id="buyBoost3Btn">Купить</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>⚡ Ускоритель ×10</strong>
+                    <small>Вращение в 10 раз быстрее на 5 минут</small>
+                </div>
+                <div>
+                    <div class="price" id="priceBoost10">21 000 ₽</div>
+                    <button class="buy-btn" id="buyBoost10Btn">Купить</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>💥 Ускоритель ×100</strong>
+                    <small>Вращение в 100 раз быстрее на 5 минут</small>
+                </div>
+                <div>
+                    <div class="price" id="priceBoost100">100 000 ₽</div>
+                    <button class="buy-btn" id="buyBoost100Btn">Купить</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>💳 VIP-карта</strong>
+                    <small>Увеличивает лимит ставок в казино до 100 000 в час</small>
+                </div>
+                <div>
+                    <div class="price" id="priceVip">1 000 000 ₽</div>
+                    <button class="buy-btn" id="buyVipCardBtn">Купить</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>💰 Удвоение дохода</strong>
+                    <small>В 2 раза больше денег за прокрут на 1 минуту</small>
+                </div>
+                <div>
+                    <div class="price" id="priceIncome2">100 000 ₽</div>
+                    <button class="buy-btn" id="buyIncome2Btn">Купить</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <div class="desc">
+                    <strong>💎 Увеличение дохода ×5</strong>
+                    <small>В 5 раз больше денег за прокрут на 5 минут</small>
+                </div>
+                <div>
+                    <div class="price" id="priceIncome5">10 000 000 ₽</div>
+                    <button class="buy-btn" id="buyIncome5Btn">Купить</button>
+                </div>
+            </div>
+            <div class="promo-section">
+                <h3 style="font-size:1.2rem; font-weight:300; margin-bottom:10px;">🎫 Промокоды</h3>
+                <div class="promo-input">
+                    <input type="text" id="promoInputShop" placeholder="Введите код">
+                    <button id="applyPromoBtn">Активировать</button>
+                </div>
+                <div id="promoMessageShop" class="promo-message"></div>
+            </div>
+            <button class="close-modal" id="closeShopBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно казино -->
+    <div class="modal-overlay" id="casinoModal">
+        <div class="modal">
+            <h2>🎰 КАЗИНО</h2>
+            <div style="font-size:14px; margin-bottom:6px; opacity:0.8;">Сделайте ставку и испытайте удачу!</div>
+            <div class="casino-bet-area">
+                <label style="font-weight:bold;">Ваша ставка (рубли):</label>
+                <input type="number" id="casinoBetInput" value="100" min="1" step="1">
+                <div class="bet-info">💰 Доступно: <span id="casinoBalanceDisplay">0</span> ₽</div>
+                <div class="bet-info">🎲 Шансы: Белый (×100) — 0.1%, Жёлтый (×10) — 1%, Красный (×2) — 28.9%, Чёрный (0) — 70%</div>
+                <div class="bet-info">⏳ Осталось ставок в час: <span id="casinoBetsLeft">100</span></div>
+                <button id="casinoSpinBtn" class="glass-btn" style="width:100%; margin-top:6px; background: rgba(241,196,15,0.2); border-color: rgba(241,196,15,0.4);">🎲 КРУТИТЬ</button>
+            </div>
+            <div id="casinoResultArea"></div>
+            <button class="close-modal" id="closeCasinoBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Проверка возраста -->
+    <div class="modal-overlay" id="ageModal">
+        <div class="modal">
+            <h2>🔞 ПРОВЕРКА ВОЗРАСТА</h2>
+            <p style="font-size:16px;">Вам есть 18 лет?</p>
+            <div class="age-buttons">
+                <button class="yes" onclick="ageConfirm(true)">✅ Да</button>
+                <button class="no" onclick="ageConfirm(false)">❌ Нет</button>
+            </div>
+            <div id="ageMessage" class="age-message"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно прокачки -->
+    <div class="modal-overlay" id="upgradeModal">
+        <div class="modal">
+            <h2>🔧 ПРОКАЧКА</h2>
+            <div class="upgrade-item-modal" id="upgradeLevel1">
+                <div class="desc">
+                    <strong>📈 1 000 ₽ за прокрут</strong>
+                    <small>Повышает награду до 1 000 ₽ за каждое вращение</small>
+                </div>
+                <div>
+                    <div class="price">100 000 ₽</div>
+                    <button class="buy-btn" id="buyUpgrade1Btn">Купить</button>
+                </div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeLevel2">
+                <div class="desc">
+                    <strong>📈 10 000 ₽ за прокрут</strong>
+                    <small>Повышает награду до 10 000 ₽ за каждое вращение</small>
+                </div>
+                <div>
+                    <div class="price">1 000 000 ₽</div>
+                    <button class="buy-btn" id="buyUpgrade2Btn">Купить</button>
+                </div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeLevel3">
+                <div class="desc">
+                    <strong>📈 100 000 ₽ за прокрут</strong>
+                    <small>Повышает награду до 100 000 ₽ за каждое вращение</small>
+                </div>
+                <div>
+                    <div class="price">100 000 000 ₽</div>
+                    <button class="buy-btn" id="buyUpgrade3Btn">Купить</button>
+                </div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeLevel4">
+                <div class="desc">
+                    <strong>📈 1 000 000 ₽ за прокрут</strong>
+                    <small>Повышает награду до 1 000 000 ₽ за каждое вращение</small>
+                </div>
+                <div>
+                    <div class="price">21 000 000 000 ₽</div>
+                    <button class="buy-btn" id="buyUpgrade4Btn">Купить</button>
+                </div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeDoubleReward">
+                <div class="desc">
+                    <strong>✖️2 ИКС2 НАГРАДА</strong>
+                    <small>Удваивает доход за каждый прокрут (постоянно)</small>
+                </div>
+                <div>
+                    <div class="price" id="priceDoubleReward">5 000 000 ₽</div>
+                    <button class="buy-btn" id="buyDoubleRewardBtn">Купить</button>
+                </div>
+            </div>
+            <button class="close-modal" id="closeUpgradeBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно ивентов -->
+    <div class="modal-overlay" id="eventsModal">
+        <div class="modal">
+            <h2>🎪 ИВЕНТЫ</h2>
+            <div style="font-size:1.1rem; margin-bottom:12px;">
+                <div>⏳ До следующего ивента: <span id="eventTimerDisplay">--:--</span></div>
+                <div style="margin-top:8px;">🎯 Текущий ивент: <span id="currentEventDisplay">Нет</span></div>
+            </div>
+            <div id="eventsList">
+                <div class="event-item"><div class="desc"><strong>💰 Денежный дождь</strong><small>+50% денег за прокрут</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🏷️ Скидочка</strong><small>Скидка 50% в магазине</small></div></div>
+                <div class="event-item"><div class="desc"><strong>💸 Антискидка</strong><small>Всё в магазине дорожает в 10 раз</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🌪️ Денежный торнадо</strong><small>В 3 раза больше денег за прокрут</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🔒 Блокировка магазина</strong><small>Магазин недоступен на 1 минуту</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🐢 Анти-прокрут</strong><small>Вращение в 5 раз медленнее</small></div></div>
+                <div class="event-item"><div class="desc"><strong>💥 Сбой</strong><small>Все баффы отключаются на 1 минуту</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🌊 Цунами Рублей</strong><small>Награда за прокрут ×10</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🎉 ВСЕ ИВЕНТЫ</strong><small>Включаются все эффекты одновременно (шанс 1%)</small></div></div>
+            </div>
+            <button class="close-modal" id="closeEventsBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно рамок -->
+    <div class="modal-overlay" id="framesModal">
+        <div class="modal">
+            <h2>🖼️ РАМКИ</h2>
+            <p style="font-size:14px; opacity:0.8; margin-bottom:12px;">
+                Сохраняйте любимые номера. Каждая рамка приносит пассивный доход.
+            </p>
+            <div class="frame-slots" id="frameSlotsContainer">
+                <!-- 4 слота будут сгенерированы JS -->
+            </div>
+            <button class="close-modal" id="closeFramesBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно настроек -->
+    <div class="modal-overlay settings-modal" id="settingsModal">
+        <div class="modal">
+            <h2>⚙️ НАСТРОЙКИ</h2>
+            <div class="settings-group">
+                <label><span>🔊</span><input type="checkbox" id="chkSound" checked> Звуки</label>
+                <label><span>🎵</span><input type="checkbox" id="chkMusic" checked> Музыка</label>
+                <label>Регион: <select id="regionSelect"></select></label>
+                <label>Тема: <button class="theme-btn" id="themeToggle">🌙</button></label>
+                <label style="flex-wrap:wrap; gap:4px;">
+                    <span style="min-width:120px;">🔊 Громкость звуков</span>
+                    <div class="volume-control">
+                        <input type="range" id="soundVolumeSlider" min="50" max="1000" value="100">
+                        <span id="soundVolumeValue">100</span>
+                    </div>
+                </label>
+                <label style="flex-wrap:wrap; gap:4px;">
+                    <span style="min-width:120px;">🎵 Громкость музыки</span>
+                    <div class="volume-control">
+                        <input type="range" id="musicVolumeSlider" min="50" max="1000" value="100">
+                        <span id="musicVolumeValue">100</span>
+                    </div>
+                </label>
+                <button class="reset-btn" id="resetProgressBtn">🗑️ Сбросить прогресс</button>
+            </div>
+            <button class="close-modal" id="closeSettingsBtn">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ---------- КОНСТАНТЫ ----------
+            const LETTERS = ['А','В','Е','К','М','Н','О','Р','С','Т','У','Х'];
+            const REGIONS = [];
+            for (let i = 1; i <= 199; i++) REGIONS.push(String(i).padStart(2, '0'));
+
+            // ---------- DOM ----------
+            const numberDisplay = document.getElementById('numberDisplay');
+            const regionDisplay = document.getElementById('regionDisplay');
+            const balanceSpan = document.getElementById('balanceDisplay');
+            const spinCountDisplay = document.getElementById('spinCountDisplay');
+            const spinTimeDisplay = document.getElementById('spinTimeDisplay');
+            const speedUpgradeDisplay = document.getElementById('speedUpgradeDisplay');
+            const boostDisplay = document.getElementById('boostDisplay');
+            const rewardDisplay = document.getElementById('rewardDisplay');
+            const doubleRewardDisplay = document.getElementById('doubleRewardDisplay');
+            const framesIncomeDisplay = document.getElementById('framesIncomeDisplay');
+            const eventDisplay = document.getElementById('eventDisplay');
+            const regionSelect = document.getElementById('regionSelect');
+            const chkSound = document.getElementById('chkSound');
+            const chkMusic = document.getElementById('chkMusic');
+            const themeToggle = document.getElementById('themeToggle');
+            const spinDigitsBtn = document.getElementById('spinDigitsBtn');
+            const spinLettersBtn = document.getElementById('spinLettersBtn');
+            const shopBtn = document.getElementById('shopBtn');
+            const shopModal = document.getElementById('shopModal');
+            const closeShopBtn = document.getElementById('closeShopBtn');
+            const buyBoost3Btn = document.getElementById('buyBoost3Btn');
+            const buyBoost10Btn = document.getElementById('buyBoost10Btn');
+            const buyBoost100Btn = document.getElementById('buyBoost100Btn');
+            const buyVipCardBtn = document.getElementById('buyVipCardBtn');
+            const buyIncome2Btn = document.getElementById('buyIncome2Btn');
+            const buyIncome5Btn = document.getElementById('buyIncome5Btn');
+            const casinoBtn = document.getElementById('casinoBtn');
+            const casinoModal = document.getElementById('casinoModal');
+            const closeCasinoBtn = document.getElementById('closeCasinoBtn');
+            const casinoBetInput = document.getElementById('casinoBetInput');
+            const casinoBalanceDisplay = document.getElementById('casinoBalanceDisplay');
+            const casinoBetsLeft = document.getElementById('casinoBetsLeft');
+            const casinoSpinBtn = document.getElementById('casinoSpinBtn');
+            const casinoResultArea = document.getElementById('casinoResultArea');
+            const ageModal = document.getElementById('ageModal');
+            const ageMessage = document.getElementById('ageMessage');
+            const settingsModal = document.getElementById('settingsModal');
+            const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+            const resetProgressBtn = document.getElementById('resetProgressBtn');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const promoInputShop = document.getElementById('promoInputShop');
+            const applyPromoBtn = document.getElementById('applyPromoBtn');
+            const promoMessageShop = document.getElementById('promoMessageShop');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            const upgradeModal = document.getElementById('upgradeModal');
+            const closeUpgradeBtn = document.getElementById('closeUpgradeBtn');
+            const buyUpgrade1Btn = document.getElementById('buyUpgrade1Btn');
+            const buyUpgrade2Btn = document.getElementById('buyUpgrade2Btn');
+            const buyUpgrade3Btn = document.getElementById('buyUpgrade3Btn');
+            const buyUpgrade4Btn = document.getElementById('buyUpgrade4Btn');
+            const buyDoubleRewardBtn = document.getElementById('buyDoubleRewardBtn');
+            const priceDoubleReward = document.getElementById('priceDoubleReward');
+            const eventsBtn = document.getElementById('eventsBtn');
+            const eventsModal = document.getElementById('eventsModal');
+            const closeEventsBtn = document.getElementById('closeEventsBtn');
+            const eventTimerDisplay = document.getElementById('eventTimerDisplay');
+            const currentEventDisplay = document.getElementById('currentEventDisplay');
+            const soundVolumeSlider = document.getElementById('soundVolumeSlider');
+            const musicVolumeSlider = document.getElementById('musicVolumeSlider');
+            const soundVolumeValue = document.getElementById('soundVolumeValue');
+            const musicVolumeValue = document.getElementById('musicVolumeValue');
+            const framesBtn = document.getElementById('framesBtn');
+            const framesModal = document.getElementById('framesModal');
+            const closeFramesBtn = document.getElementById('closeFramesBtn');
+            const frameSlotsContainer = document.getElementById('frameSlotsContainer');
+
+            const priceBoost3 = document.getElementById('priceBoost3');
+            const priceBoost10 = document.getElementById('priceBoost10');
+            const priceBoost100 = document.getElementById('priceBoost100');
+            const priceVip = document.getElementById('priceVip');
+            const priceIncome2 = document.getElementById('priceIncome2');
+            const priceIncome5 = document.getElementById('priceIncome5');
+
+            // ---------- УВЕДОМЛЕНИЯ ----------
+            const notificationContainer = document.getElementById('notificationContainer');
+
+            function showNotification(message, type = 'info', duration = 4000) {
+                const existing = notificationContainer.querySelectorAll('.notification');
+                let lastEl = null;
+                let lastText = '';
+                if (existing.length > 0) {
+                    lastEl = existing[existing.length - 1];
+                    lastText = lastEl.textContent.replace(/ \(×\d+\)$/, '');
+                }
+                if (lastEl && lastText === message) {
+                    const match = lastEl.textContent.match(/ \(×(\d+)\)$/);
+                    let count = 1;
+                    if (match) {
+                        count = parseInt(match[1]) + 1;
+                        lastEl.textContent = message + ' (×' + count + ')';
+                    } else {
+                        lastEl.textContent = message + ' (×2)';
+                    }
+                    lastEl.style.animation = 'none';
+                    void lastEl.offsetHeight;
+                    lastEl.style.animation = 'notifIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), notifOut 0.35s ease 3.7s forwards';
+                    clearTimeout(lastEl._timeout);
+                    lastEl._timeout = setTimeout(() => {
+                        if (lastEl.parentNode) lastEl.remove();
+                    }, duration + 500);
+                    return;
+                }
+
+                const el = document.createElement('div');
+                el.className = 'notification ' + type;
+                el.textContent = message;
+                notificationContainer.appendChild(el);
+                el._timeout = setTimeout(() => {
+                    if (el.parentNode) el.remove();
+                }, duration + 500);
+            }
+
+            // ---------- ФОРМАТИРОВАНИЕ ЧИСЕЛ ----------
+            function formatNumber(n) {
+                if (n === undefined || n === null) return '0';
+                if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T';
+                if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+                if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+                if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+                return n.toString();
+            }
+
+            // ---------- СОСТОЯНИЕ ----------
+            let state = {
+                region: '77',
+                firstLetter: 'А',
+                digits: '123',
+                twoLetters: 'ВС',
+                balance: 100,
+                spinCount: 0,
+                boostMultiplier: 1,
+                boostEndTime: 0,
+                soundEnabled: true,
+                musicEnabled: true,
+                theme: 'dark',
+                vipCardOwned: false,
+                casinoBetsThisHour: 0,
+                casinoLastBetTime: 0,
+                ageConfirmed: false,
+                usedPromoCodes: [],
+                rewardLevel: 0,
+                incomeMultiplier: 1,
+                incomeEndTime: 0,
+                eventActive: false,
+                eventType: '',
+                eventEndTime: 0,
+                eventMultiplier: 1,
+                nextEventTime: 0,
+                eventTimerInterval: null,
+                soundVolume: 100,
+                musicVolume: 100,
+                savedNumbers: [{}, {}, {}, {}], // 4 слота: { firstLetter, digits, twoLetters, region }
+                doubleReward: false
+            };
+
+            // ---------- АУДИО ----------
+            let audioCtx = null;
+            let musicInterval = null;
+            let musicGainNode = null;
+
+            function initAudio() {
+                if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                return audioCtx;
+            }
+
+            function getVolume(vol) {
+                return vol / 100;
+            }
+
+            function playClick() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = initAudio();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.value = 800;
+                    const vol = getVolume(state.soundVolume);
+                    gain.gain.setValueAtTime(0.12 * vol, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.06);
+                } catch (e) {}
+            }
+
+            function playSpinTick() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = initAudio();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.type = 'square';
+                    osc.frequency.value = 200 + Math.random() * 500;
+                    const vol = getVolume(state.soundVolume);
+                    gain.gain.setValueAtTime(0.035 * vol, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.04);
+                } catch (e) {}
+            }
+
+            // ---------- МУЗЫКА ----------
+            function startMusic() {
+                stopMusic();
+                if (!state.musicEnabled) return;
+                try {
+                    const ctx = initAudio();
+                    const gain = ctx.createGain();
+                    const vol = getVolume(state.musicVolume);
+                    gain.gain.value = 0.07 * vol;
+                    gain.connect(ctx.destination);
+                    musicGainNode = gain;
+                    const notes = [523, 587, 659, 784, 880, 988, 1047];
+                    let idx = 0;
+                    musicInterval = setInterval(() => {
+                        if (!state.musicEnabled || !musicGainNode) {
+                            clearInterval(musicInterval);
+                            musicInterval = null;
+                            return;
+                        }
+                        const osc = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        osc.connect(g);
+                        g.connect(musicGainNode);
+                        osc.type = 'sine';
+                        osc.frequency.value = notes[idx % notes.length];
+                        const vol2 = getVolume(state.musicVolume);
+                        g.gain.setValueAtTime(0.10 * vol2, ctx.currentTime);
+                        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.35);
+                        idx++;
+                    }, 380);
+                } catch (e) {}
+            }
+
+            function stopMusic() {
+                if (musicInterval) { clearInterval(musicInterval); musicInterval = null; }
+                if (musicGainNode) { try { musicGainNode.disconnect(); } catch (e) {} musicGainNode = null; }
+            }
+
+            function updateMusicVolume() {
+                if (musicGainNode) {
+                    const vol = getVolume(state.musicVolume);
+                    musicGainNode.gain.value = 0.07 * vol;
+                }
+            }
+
+            // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
+            function getFullNumber() {
+                return state.firstLetter + state.digits + state.twoLetters;
+            }
+
+            function getSpinDuration() {
+                let base = 5000;
+                if (state.spinCount >= 10) base = 3000;
+                let effectiveMult = 1;
+                if (state.eventActive && state.eventType === 'anti_spin') {
+                    effectiveMult *= 5;
+                }
+                if (!(state.eventActive && state.eventType === 'crash')) {
+                    if (state.boostMultiplier > 1 && Date.now() < state.boostEndTime) {
+                        effectiveMult /= state.boostMultiplier;
+                    }
+                }
+                return Math.max(100, Math.floor(base * effectiveMult));
+            }
+
+            // Базовая награда с учётом ивентов (кроме crash)
+            function getBaseSpinReward() {
+                const level = state.rewardLevel;
+                let base = 100;
+                if (level === 1) base = 1000;
+                else if (level === 2) base = 10000;
+                else if (level === 3) base = 100000;
+                else if (level === 4) base = 1000000;
+                let mult = 1;
+                if (!(state.eventActive && state.eventType === 'crash')) {
+                    if (state.eventActive && state.eventType === 'rain') mult *= 1.5;
+                    else if (state.eventActive && state.eventType === 'tornado') mult *= 3;
+                    else if (state.eventActive && state.eventType === 'tsunami') mult *= 10;
+                    if (Date.now() < state.incomeEndTime) mult *= state.incomeMultiplier;
+                }
+                if (state.doubleReward) mult *= 2;
+                return Math.floor(base * mult);
+            }
+
+            // Эффективная цена с учётом скидки/антискидки
+            function getEffectivePrice(originalPrice) {
+                let price = originalPrice;
+                if (state.eventActive && state.eventType === 'discount') {
+                    price = Math.floor(price / 2);
+                } else if (state.eventActive && state.eventType === 'anti') {
+                    price = price * 10;
+                }
+                return price;
+            }
+
+            // Проверка комбинаций для дохода рамок
+            function getFrameIncome(firstLetter, digits, twoLetters) {
+                const letters = firstLetter + twoLetters;
+                const isDigitsSame = digits[0] === digits[1] && digits[1] === digits[2];
+                const isDigitsSpecial = digits === '021' || digits === '067';
+                const isLettersSame = letters[0] === letters[1] && letters[1] === letters[2];
+                const isDigitsSpecialOrSame = isDigitsSame || isDigitsSpecial;
+
+                if (isDigitsSpecialOrSame && isLettersSame) return 1000;
+                if (isDigitsSpecialOrSame || isLettersSame) return 100;
+                return 10;
+            }
+
+            // Общий доход от всех рамок
+            function getTotalFramesIncome() {
+                let total = 0;
+                for (let slot of state.savedNumbers) {
+                    if (slot.firstLetter && slot.digits && slot.twoLetters) {
+                        total += getFrameIncome(slot.firstLetter, slot.digits, slot.twoLetters);
+                    }
+                }
+                return total;
+            }
+
+            function updateUI() {
+                numberDisplay.textContent = getFullNumber();
+                regionDisplay.textContent = state.region;
+                balanceSpan.textContent = formatNumber(state.balance);
+                spinCountDisplay.textContent = formatNumber(state.spinCount);
+                if (state.spinCount >= 10) {
+                    speedUpgradeDisplay.textContent = '✅';
+                    speedUpgradeDisplay.className = 'value active';
+                } else {
+                    speedUpgradeDisplay.textContent = '❌';
+                    speedUpgradeDisplay.className = 'value inactive';
+                }
+                const boostActive = Date.now() < state.boostEndTime && state.boostMultiplier > 1;
+                if (boostActive) {
+                    boostDisplay.textContent = '×' + state.boostMultiplier + ' ( ' + Math.ceil((state.boostEndTime - Date.now()) / 60000) + ' мин )';
+                    boostDisplay.className = 'value active';
+                } else {
+                    boostDisplay.textContent = '❌';
+                    boostDisplay.className = 'value inactive';
+                }
+                rewardDisplay.textContent = formatNumber(getBaseSpinReward()) + ' ₽';
+                const dur = getSpinDuration();
+                spinTimeDisplay.textContent = (dur / 1000).toFixed(1) + ' с';
+
+                // ИКС2 НАГРАДА
+                if (state.doubleReward) {
+                    doubleRewardDisplay.textContent = '✅';
+                    doubleRewardDisplay.className = 'value active';
+                } else {
+                    doubleRewardDisplay.textContent = '❌';
+                    doubleRewardDisplay.className = 'value inactive';
+                }
+
+                // Доход от рамок
+                const income = getTotalFramesIncome();
+                framesIncomeDisplay.textContent = income + ' ₽/с';
+
+                // Активный ивент
+                const names = {
+                    'rain': '💰 Денежный дождь',
+                    'discount': '🏷️ Скидочка',
+                    'anti': '💸 Антискидка',
+                    'tornado': '🌪️ Денежный торнадо',
+                    'shop_block': '🔒 Блокировка магазина',
+                    'anti_spin': '🐢 Анти-прокрут',
+                    'crash': '💥 Сбой',
+                    'tsunami': '🌊 Цунами Рублей',
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ'
+                };
+                if (state.eventActive) {
+                    const remaining = Math.max(0, Math.ceil((state.eventEndTime - Date.now()) / 1000));
+                    const name = names[state.eventType] || state.eventType;
+                    eventDisplay.textContent = name + ' (' + remaining + 'с)';
+                    eventDisplay.className = 'value active';
+                } else {
+                    eventDisplay.textContent = 'Нет';
+                    eventDisplay.className = 'value inactive';
+                }
+
+                // Блокировка магазина
+                if (state.eventActive && state.eventType === 'shop_block') {
+                    shopBtn.disabled = true;
+                    const remaining = Math.max(0, Math.ceil((state.eventEndTime - Date.now()) / 1000));
+                    shopBtn.textContent = `🔒 Магазин заблокирован (${remaining}с)`;
+                } else {
+                    shopBtn.disabled = false;
+                    shopBtn.textContent = '🏪 Магазин';
+                }
+
+                regionSelect.value = state.region;
+                chkSound.checked = state.soundEnabled;
+                chkMusic.checked = state.musicEnabled;
+                if (casinoModal.classList.contains('active')) updateCasinoUI();
+                updateShopUI();
+                updateUpgradeUI();
+                if (eventsModal.classList.contains('active')) updateEventsUI();
+                if (framesModal.classList.contains('active')) renderFrames();
+                soundVolumeSlider.value = state.soundVolume;
+                soundVolumeValue.textContent = state.soundVolume;
+                musicVolumeSlider.value = state.musicVolume;
+                musicVolumeValue.textContent = state.musicVolume;
+            }
+
+            function saveState() {
+                const data = {
+                    region: state.region,
+                    firstLetter: state.firstLetter,
+                    digits: state.digits,
+                    twoLetters: state.twoLetters,
+                    balance: state.balance,
+                    spinCount: state.spinCount,
+                    boostMultiplier: state.boostMultiplier,
+                    boostEndTime: state.boostEndTime,
+                    soundEnabled: state.soundEnabled,
+                    musicEnabled: state.musicEnabled,
+                    theme: state.theme,
+                    vipCardOwned: state.vipCardOwned,
+                    casinoBetsThisHour: state.casinoBetsThisHour,
+                    casinoLastBetTime: state.casinoLastBetTime,
+                    ageConfirmed: state.ageConfirmed,
+                    usedPromoCodes: state.usedPromoCodes,
+                    rewardLevel: state.rewardLevel,
+                    incomeMultiplier: state.incomeMultiplier,
+                    incomeEndTime: state.incomeEndTime,
+                    eventActive: state.eventActive,
+                    eventType: state.eventType,
+                    eventEndTime: state.eventEndTime,
+                    eventMultiplier: state.eventMultiplier,
+                    nextEventTime: state.nextEventTime,
+                    soundVolume: state.soundVolume,
+                    musicVolume: state.musicVolume,
+                    savedNumbers: state.savedNumbers,
+                    doubleReward: state.doubleReward
+                };
+                localStorage.setItem('rouletteNumberState', JSON.stringify(data));
+            }
+
+            function loadState() {
+                const raw = localStorage.getItem('rouletteNumberState');
+                if (!raw) return false;
+                try {
+                    const data = JSON.parse(raw);
+                    state.region = data.region || '77';
+                    state.firstLetter = data.firstLetter || 'А';
+                    state.digits = data.digits || '123';
+                    state.twoLetters = data.twoLetters || 'ВС';
+                    state.balance = typeof data.balance === 'number' ? data.balance : 100;
+                    state.spinCount = typeof data.spinCount === 'number' ? data.spinCount : 0;
+                    state.boostMultiplier = data.boostMultiplier || 1;
+                    state.boostEndTime = data.boostEndTime || 0;
+                    state.soundEnabled = data.soundEnabled !== undefined ? data.soundEnabled : true;
+                    state.musicEnabled = data.musicEnabled !== undefined ? data.musicEnabled : true;
+                    state.theme = data.theme || 'dark';
+                    state.vipCardOwned = data.vipCardOwned || false;
+                    state.casinoBetsThisHour = data.casinoBetsThisHour || 0;
+                    state.casinoLastBetTime = data.casinoLastBetTime || 0;
+                    state.ageConfirmed = data.ageConfirmed || false;
+                    state.usedPromoCodes = data.usedPromoCodes || [];
+                    state.rewardLevel = data.rewardLevel || 0;
+                    state.incomeMultiplier = data.incomeMultiplier || 1;
+                    state.incomeEndTime = data.incomeEndTime || 0;
+                    state.eventActive = data.eventActive || false;
+                    state.eventType = data.eventType || '';
+                    state.eventEndTime = data.eventEndTime || 0;
+                    state.eventMultiplier = data.eventMultiplier || 1;
+                    state.nextEventTime = data.nextEventTime || 0;
+                    state.soundVolume = data.soundVolume || 100;
+                    state.musicVolume = data.musicVolume || 100;
+                    state.savedNumbers = data.savedNumbers || [{}, {}, {}, {}];
+                    state.doubleReward = data.doubleReward || false;
+                    return true;
+                } catch (e) { return false; }
+            }
+
+            // ---------- ТЕМА ----------
+            function applyTheme(theme) {
+                document.body.className = theme;
+                themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+                state.theme = theme;
+                saveState();
+            }
+
+            // ---------- ГЕНЕРАЦИЯ СЛУЧАЙНЫХ ЧАСТЕЙ ----------
+            function randomDigits() {
+                let d = '';
+                for (let i = 0; i < 3; i++) d += Math.floor(Math.random() * 10);
+                return d;
+            }
+            function randomFirstLetter() {
+                return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+            }
+            function randomTwoLetters() {
+                let s = '';
+                for (let i = 0; i < 2; i++) s += LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                return s;
+            }
+            function generateInitialNumber() {
+                state.firstLetter = randomFirstLetter();
+                state.digits = randomDigits();
+                state.twoLetters = randomTwoLetters();
+            }
+
+            // ---------- РАЗДЕЛЬНОЕ ВРАЩЕНИЕ ----------
+            let spinningLetters = false;
+            let spinningDigits = false;
+
+            function performSpin(action) {
+                if (action === 'letters' && spinningLetters) return;
+                if (action === 'digits' && spinningDigits) return;
+
+                const btn = action === 'letters' ? spinLettersBtn : spinDigitsBtn;
+                if (action === 'letters') spinningLetters = true;
+                else spinningDigits = true;
+                btn.disabled = true;
+
+                playSpinTick();
+                const duration = getSpinDuration();
+                let finalFirst = state.firstLetter;
+                let finalDigits = state.digits;
+                let finalTwo = state.twoLetters;
+
+                if (action === 'digits') {
+                    finalDigits = randomDigits();
+                } else if (action === 'letters') {
+                    finalFirst = randomFirstLetter();
+                    finalTwo = randomTwoLetters();
+                }
+
+                const startTime = Date.now();
+                let tickInterval = 60;
+
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    if (elapsed >= duration) {
+                        if (action === 'digits') state.digits = finalDigits;
+                        else { state.firstLetter = finalFirst; state.twoLetters = finalTwo; }
+
+                        let reward = getBaseSpinReward();
+                        let bonusMult = 1;
+                        let bonusMsg = '';
+
+                        const digits = state.digits;
+                        if (digits[0] === digits[1] && digits[1] === digits[2]) {
+                            bonusMult *= 10;
+                            bonusMsg += ' Все цифры одинаковые! ×10';
+                        } else if (digits === '021') {
+                            bonusMult *= 21;
+                            bonusMsg += ' Комбинация 021! ×21';
+                        } else if (digits === '067') {
+                            bonusMult *= 67;
+                            bonusMsg += ' Комбинация 067! ×67';
+                        }
+
+                        const letters = state.firstLetter + state.twoLetters;
+                        if (letters[0] === letters[1] && letters[1] === letters[2]) {
+                            bonusMult *= 10;
+                            bonusMsg += ' Все буквы одинаковые! ×10';
+                        }
+
+                        if (bonusMult > 1) {
+                            reward = Math.floor(reward * bonusMult);
+                            showNotification('🎰 Бонус!' + bonusMsg + ' Награда ×' + bonusMult, 'success');
+                        }
+
+                        state.spinCount += 1;
+                        state.balance += reward;
+                        saveState();
+                        updateUI();
+                        playClick();
+                        showNotification('💰 +' + formatNumber(reward) + ' ₽ за вращение!', 'success');
+
+                        if (action === 'letters') spinningLetters = false;
+                        else spinningDigits = false;
+                        btn.disabled = false;
+                        return;
+                    }
+                    if (action === 'digits') state.digits = randomDigits();
+                    else { state.firstLetter = randomFirstLetter(); state.twoLetters = randomTwoLetters(); }
+                    updateUI();
+                    playSpinTick();
+                    setTimeout(animate, tickInterval);
+                }
+                animate();
+            }
+
+            // ---------- МАГАЗИН ----------
+            function openShop() {
+                if (state.eventActive && state.eventType === 'shop_block') {
+                    showNotification('🔒 Магазин заблокирован ивентом!', 'warning');
+                    return;
+                }
+                playClick();
+                shopModal.classList.add('open');
+                updateShopUI();
+                promoMessageShop.textContent = '';
+                promoInputShop.value = '';
+            }
+            function closeShop() { shopModal.classList.remove('open'); }
+
+            function updateShopUI() {
+                const now = Date.now();
+                const boostActive = now < state.boostEndTime && state.boostMultiplier > 1;
+
+                const effPrice3 = getEffectivePrice(10000);
+                const effPrice10 = getEffectivePrice(21000);
+                const effPrice100 = getEffectivePrice(100000);
+                const effPriceVip = getEffectivePrice(1000000);
+                const effPriceIncome2 = getEffectivePrice(100000);
+                const effPriceIncome5 = getEffectivePrice(10000000);
+
+                priceBoost3.textContent = formatNumber(effPrice3) + ' ₽';
+                priceBoost10.textContent = formatNumber(effPrice10) + ' ₽';
+                priceBoost100.textContent = formatNumber(effPrice100) + ' ₽';
+                priceVip.textContent = formatNumber(effPriceVip) + ' ₽';
+                priceIncome2.textContent = formatNumber(effPriceIncome2) + ' ₽';
+                priceIncome5.textContent = formatNumber(effPriceIncome5) + ' ₽';
+
+                buyBoost3Btn.disabled = (boostActive && state.boostMultiplier >= 3) || state.balance < effPrice3;
+                buyBoost3Btn.textContent = (boostActive && state.boostMultiplier >= 3) ? 'Активен' : 'Купить';
+                buyBoost10Btn.disabled = (boostActive && state.boostMultiplier >= 10) || state.balance < effPrice10;
+                buyBoost10Btn.textContent = (boostActive && state.boostMultiplier >= 10) ? 'Активен' : 'Купить';
+                buyBoost100Btn.disabled = (boostActive && state.boostMultiplier >= 100) || state.balance < effPrice100;
+                buyBoost100Btn.textContent = (boostActive && state.boostMultiplier >= 100) ? 'Активен' : 'Купить';
+                buyVipCardBtn.disabled = state.vipCardOwned || state.balance < effPriceVip;
+                buyVipCardBtn.textContent = state.vipCardOwned ? 'Куплена' : 'Купить';
+
+                const incomeActive = now < state.incomeEndTime && state.incomeMultiplier >= 2;
+                buyIncome2Btn.disabled = (incomeActive && state.incomeMultiplier >= 2) || state.balance < effPriceIncome2;
+                buyIncome2Btn.textContent = (incomeActive && state.incomeMultiplier >= 2) ? 'Активен' : 'Купить';
+                const income5Active = now < state.incomeEndTime && state.incomeMultiplier >= 5;
+                buyIncome5Btn.disabled = (income5Active && state.incomeMultiplier >= 5) || state.balance < effPriceIncome5;
+                buyIncome5Btn.textContent = (income5Active && state.incomeMultiplier >= 5) ? 'Активен' : 'Купить';
+            }
+
+            function activateBoost(multiplier, price, name) {
+                const effPrice = getEffectivePrice(price);
+                if (state.balance < effPrice) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return false;
+                }
+                if (Date.now() < state.boostEndTime && state.boostMultiplier >= multiplier) {
+                    showNotification('❌ Уже активен более сильный бафф!', 'warning');
+                    return false;
+                }
+                state.balance -= effPrice;
+                state.boostMultiplier = multiplier;
+                state.boostEndTime = Date.now() + 5 * 60 * 1000;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('🚀 ' + name + ' активирован на 5 минут!', 'success');
+                return true;
+            }
+
+            buyBoost3Btn.addEventListener('click', function() { activateBoost(3, 10000, 'Ускоритель ×3'); });
+            buyBoost10Btn.addEventListener('click', function() { activateBoost(10, 21000, 'Ускоритель ×10'); });
+            buyBoost100Btn.addEventListener('click', function() { activateBoost(100, 100000, 'Ускоритель ×100'); });
+
+            buyVipCardBtn.addEventListener('click', function() {
+                if (state.vipCardOwned) { playClick(); return; }
+                const price = getEffectivePrice(1000000);
+                if (state.balance < price) {
+                    showNotification('❌ Нужно ' + formatNumber(price) + ' ₽!', 'error');
+                    return;
+                }
+                state.balance -= price;
+                state.vipCardOwned = true;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('💳 VIP-карта куплена! Лимит ставок в казино увеличен до 100 000.', 'success');
+            });
+
+            function activateIncome(multiplier, durationMs, price, name) {
+                const effPrice = getEffectivePrice(price);
+                if (state.balance < effPrice) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return false;
+                }
+                if (Date.now() < state.incomeEndTime && state.incomeMultiplier >= multiplier) {
+                    showNotification('❌ Уже активен более сильный бафф дохода!', 'warning');
+                    return false;
+                }
+                state.balance -= effPrice;
+                state.incomeMultiplier = multiplier;
+                state.incomeEndTime = Date.now() + durationMs;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('💰 ' + name + ' активирован!', 'success');
+                return true;
+            }
+
+            buyIncome2Btn.addEventListener('click', function() {
+                activateIncome(2, 60 * 1000, 100000, 'Удвоение дохода на 1 минуту');
+            });
+
+            buyIncome5Btn.addEventListener('click', function() {
+                activateIncome(5, 5 * 60 * 1000, 10000000, 'Увеличение дохода ×5 на 5 минут');
+            });
+
+            closeShopBtn.addEventListener('click', closeShop);
+            shopModal.addEventListener('click', function(e) {
+                if (e.target === shopModal) closeShop();
+            });
+            shopBtn.addEventListener('click', openShop);
+
+            // ---------- ПРОМОКОДЫ ----------
+            applyPromoBtn.addEventListener('click', function() {
+                const code = promoInputShop.value.trim().toUpperCase();
+                promoInputShop.value = '';
+                if (!code) {
+                    promoMessageShop.textContent = 'Введите код';
+                    return;
+                }
+
+                let success = false;
+                let msg = '';
+
+                if (code === '212121') {
+                    if (state.usedPromoCodes.includes('212121')) {
+                        msg = '❌ Этот промокод уже использован';
+                    } else {
+                        state.balance += 1000000000000;
+                        state.usedPromoCodes.push('212121');
+                        success = true;
+                        msg = '✅ +1 000 000 000 000 ₽!';
+                    }
+                }
+                else if (code === '21') {
+                    if (state.usedPromoCodes.includes('21')) {
+                        msg = '❌ Этот промокод уже использован';
+                    } else {
+                        if (state.boostMultiplier >= 21 && Date.now() < state.boostEndTime) {
+                            msg = '❌ Уже активен более сильный бафф!';
+                        } else {
+                            state.boostMultiplier = 21;
+                            state.boostEndTime = Date.now() + 60 * 1000;
+                            state.usedPromoCodes.push('21');
+                            success = true;
+                            msg = '✅ Буст ×21 активирован на 1 минуту!';
+                        }
+                    }
+                } else {
+                    msg = '❌ Неизвестный промокод';
+                }
+
+                if (success) {
+                    playClick();
+                    showNotification(msg, 'success');
+                } else {
+                    showNotification(msg, 'error');
+                }
+                promoMessageShop.textContent = msg;
+                saveState();
+                updateUI();
+            });
+
+            // ---------- КАЗИНО ----------
+            function openCasino() {
+                if (!state.ageConfirmed) {
+                    ageModal.classList.add('open');
+                    return;
+                }
+                playClick();
+                casinoModal.classList.add('open');
+                updateCasinoUI();
+            }
+            function closeCasino() { casinoModal.classList.remove('open'); }
+
+            window.ageConfirm = function(age) {
+                if (age) {
+                    state.ageConfirmed = true;
+                    ageModal.classList.remove('open');
+                    saveState();
+                    openCasino();
+                } else {
+                    ageMessage.textContent = '❌ Вы не можете войти сюда.';
+                    ageMessage.style.color = '#e74c3c';
+                    const btn = document.createElement('button');
+                    btn.textContent = '🔄 Попробовать снова';
+                    btn.style.marginTop = '10px';
+                    btn.style.background = '#f1c40f';
+                    btn.style.border = 'none';
+                    btn.style.padding = '8px 20px';
+                    btn.style.borderRadius = '30px';
+                    btn.style.cursor = 'pointer';
+                    btn.onclick = function() {
+                        ageMessage.textContent = '';
+                        this.remove();
+                    };
+                    ageMessage.appendChild(btn);
+                }
+            };
+
+            function updateCasinoUI() {
+                const now = Date.now();
+                if (now - state.casinoLastBetTime > 3600000) {
+                    state.casinoBetsThisHour = 0;
+                    state.casinoLastBetTime = now;
+                }
+                const limit = state.vipCardOwned ? 100000 : 100;
+                const left = Math.max(0, limit - state.casinoBetsThisHour);
+                casinoBalanceDisplay.textContent = formatNumber(state.balance);
+                casinoBetsLeft.textContent = left;
+                casinoSpinBtn.disabled = (left <= 0);
+                if (parseInt(casinoBetInput.value) > state.balance) casinoBetInput.value = state.balance;
+            }
+
+            casinoSpinBtn.addEventListener('click', function() {
+                const now = Date.now();
+                if (now - state.casinoLastBetTime > 3600000) {
+                    state.casinoBetsThisHour = 0;
+                    state.casinoLastBetTime = now;
+                }
+                const limit = state.vipCardOwned ? 100000 : 100;
+                if (state.casinoBetsThisHour >= limit) {
+                    showNotification('❌ Лимит ставок в час исчерпан!', 'error');
+                    updateCasinoUI();
+                    return;
+                }
+
+                let bet = parseInt(casinoBetInput.value);
+                if (isNaN(bet) || bet < 1) bet = 1;
+                if (bet > state.balance) {
+                    showNotification('❌ Недостаточно рублей!', 'error');
+                    return;
+                }
+
+                const rand = Math.random();
+                let result = '', multiplier = 0;
+                if (rand < 0.001) { result = 'белый'; multiplier = 100; }
+                else if (rand < 0.011) { result = 'жёлтый'; multiplier = 10; }
+                else if (rand < 0.300) { result = 'красный'; multiplier = 2; }
+                else { result = 'чёрный'; multiplier = 0; }
+
+                state.casinoBetsThisHour++;
+                state.casinoLastBetTime = now;
+
+                let winAmount = 0;
+                let msg = '';
+                if (multiplier > 0) {
+                    winAmount = bet * multiplier;
+                    state.balance += winAmount;
+                    if (result === 'жёлтый') {
+                        showNotification('🍀 Вам выпал жёлтый! Поздравляем!', 'success');
+                    }
+                    if (result === 'белый') {
+                        showNotification('🎉 Вам выпал белый! Поздравляем!', 'success');
+                    }
+                    msg = `🎉 Выпал ${result}! Вы выиграли ${formatNumber(winAmount)} ₽!`;
+                    if (multiplier === 100) msg += ' 🌟 ДЖЕКПОТ!';
+                    playClick();
+                } else {
+                    state.balance -= bet;
+                    msg = `💀 Выпал ${result}! Вы проиграли ${formatNumber(bet)} ₽.`;
+                }
+
+                casinoResultArea.innerHTML = `<div class="casino-result ${multiplier > 0 ? (multiplier === 100 ? 'jackpot' : 'win') : 'lose'}">${msg}</div>`;
+                saveState();
+                updateUI();
+                updateCasinoUI();
+                if (bet > state.balance) casinoBetInput.value = state.balance;
+            });
+
+            closeCasinoBtn.addEventListener('click', closeCasino);
+            casinoModal.addEventListener('click', function(e) {
+                if (e.target === casinoModal) closeCasino();
+            });
+            casinoBtn.addEventListener('click', openCasino);
+
+            // ---------- ПРОКАЧКА ----------
+            function openUpgrade() {
+                playClick();
+                upgradeModal.classList.add('open');
+                updateUpgradeUI();
+            }
+            function closeUpgrade() { upgradeModal.classList.remove('open'); }
+
+            function updateUpgradeUI() {
+                const level = state.rewardLevel;
+                const canBuy1 = (level === 0) && state.balance >= 100000;
+                buyUpgrade1Btn.disabled = !canBuy1 || level >= 1;
+                buyUpgrade1Btn.textContent = (level >= 1) ? 'Куплено' : 'Купить';
+                const canBuy2 = (level === 1) && state.balance >= 1000000;
+                buyUpgrade2Btn.disabled = !canBuy2 || level < 1 || level >= 2;
+                buyUpgrade2Btn.textContent = (level >= 2) ? 'Куплено' : 'Купить';
+                const canBuy3 = (level === 2) && state.balance >= 100000000;
+                buyUpgrade3Btn.disabled = !canBuy3 || level < 2 || level >= 3;
+                buyUpgrade3Btn.textContent = (level >= 3) ? 'Куплено' : 'Купить';
+                const canBuy4 = (level === 3) && state.balance >= 21000000000;
+                buyUpgrade4Btn.disabled = !canBuy4 || level < 3 || level >= 4;
+                buyUpgrade4Btn.textContent = (level >= 4) ? 'Куплено' : 'Купить';
+
+                // ИКС2 НАГРАДА
+                const doublePrice = getEffectivePrice(5000000);
+                priceDoubleReward.textContent = formatNumber(doublePrice) + ' ₽';
+                buyDoubleRewardBtn.disabled = state.doubleReward || state.balance < doublePrice;
+                buyDoubleRewardBtn.textContent = state.doubleReward ? 'Куплено' : 'Купить';
+            }
+
+            buyUpgrade1Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 1) { playClick(); return; }
+                if (state.balance < 100000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 100000;
+                state.rewardLevel = 1;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 1 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
+            buyUpgrade2Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 2) { playClick(); return; }
+                if (state.rewardLevel < 1) { showNotification('❌ Сначала купите предыдущий уровень!', 'warning'); return; }
+                if (state.balance < 1000000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 1000000;
+                state.rewardLevel = 2;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 10 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
+            buyUpgrade3Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 3) { playClick(); return; }
+                if (state.rewardLevel < 2) { showNotification('❌ Сначала купите предыдущий уровень!', 'warning'); return; }
+                if (state.balance < 100000000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 100000000;
+                state.rewardLevel = 3;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 100 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
+            buyUpgrade4Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 4) { playClick(); return; }
+                if (state.rewardLevel < 3) { showNotification('❌ Сначала купите предыдущий уровень!', 'warning'); return; }
+                if (state.balance < 21000000000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 21000000000;
+                state.rewardLevel = 4;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 1 000 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
+            buyDoubleRewardBtn.addEventListener('click', function() {
+                if (state.doubleReward) { playClick(); return; }
+                const price = getEffectivePrice(5000000);
+                if (state.balance < price) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return;
+                }
+                state.balance -= price;
+                state.doubleReward = true;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('✖️2 ИКС2 НАГРАДА активирована постоянно!', 'success');
+                closeUpgrade();
+            });
+
+            closeUpgradeBtn.addEventListener('click', closeUpgrade);
+            upgradeModal.addEventListener('click', function(e) {
+                if (e.target === upgradeModal) closeUpgrade();
+            });
+            upgradeBtn.addEventListener('click', openUpgrade);
+
+            // ---------- ИВЕНТЫ ----------
+            function openEvents() {
+                playClick();
+                eventsModal.classList.add('open');
+                updateEventsUI();
+            }
+            function closeEvents() { eventsModal.classList.remove('open'); }
+
+            function updateEventsUI() {
+                const now = Date.now();
+                const names = {
+                    'rain': '💰 Денежный дождь',
+                    'discount': '🏷️ Скидочка',
+                    'anti': '💸 Антискидка',
+                    'tornado': '🌪️ Денежный торнадо',
+                    'shop_block': '🔒 Блокировка магазина',
+                    'anti_spin': '🐢 Анти-прокрут',
+                    'crash': '💥 Сбой',
+                    'tsunami': '🌊 Цунами Рублей',
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ'
+                };
+                if (state.eventActive) {
+                    const remaining = Math.max(0, Math.ceil((state.eventEndTime - now) / 1000));
+                    currentEventDisplay.textContent = (names[state.eventType] || state.eventType) + ' (' + remaining + 'с)';
+                } else {
+                    currentEventDisplay.textContent = 'Нет активного ивента';
+                }
+                const next = Math.max(0, Math.ceil((state.nextEventTime - now) / 1000));
+                const mins = Math.floor(next / 60);
+                const secs = next % 60;
+                eventTimerDisplay.textContent = (mins > 0 ? mins + 'м ' : '') + secs + 'с';
+            }
+
+            function startRandomEvent() {
+                // Список всех ивентов, кроме 'all_events'
+                const eventTypes = ['rain', 'discount', 'anti', 'tornado', 'shop_block', 'anti_spin', 'crash', 'tsunami'];
+                let chosenType;
+                const rand = Math.random();
+                if (rand < 0.01) {
+                    chosenType = 'all_events';
+                } else {
+                    chosenType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+                }
+
+                state.eventActive = true;
+                state.eventType = chosenType;
+                state.eventEndTime = Date.now() + 60 * 1000;
+                state.eventMultiplier = 1;
+
+                // Если выпал all_events, активируем все эффекты
+                if (chosenType === 'all_events') {
+                    // Мы просто установим флаг, но реально эффекты будут работать через обычную логику
+                    // Так как каждый ивент имеет свой эффект, мы можем просто включить все типы одновременно.
+                    // Но проще: установим eventType = 'all_events' и в функциях будем проверять этот тип.
+                    // Для упрощения оставим как есть, но логика начисления награды будет проверять этот тип.
+                    // Чтобы не усложнять, мы просто установим флаг, а в getBaseSpinReward будем проверять.
+                    // Но нам нужно также применить все эффекты: +50%, +3x, +10x, скидка, антискидка, блокировка, анти-прокрут, сбой.
+                    // Вместо этого мы в коде везде, где проверяется eventType, добавим проверку на 'all_events' и будем считать, что все активны.
+                    // Это самый простой способ.
+                }
+
+                saveState();
+                updateUI();
+                const names = {
+                    'rain': '💰 Денежный дождь (+50% дохода)',
+                    'discount': '🏷️ Скидочка (скидка 50% в магазине)',
+                    'anti': '💸 Антискидка (магазин дороже в 10 раз)',
+                    'tornado': '🌪️ Денежный торнадо (×3 дохода)',
+                    'shop_block': '🔒 Блокировка магазина (магазин недоступен)',
+                    'anti_spin': '🐢 Анти-прокрут (вращение в 5 раз медленнее)',
+                    'crash': '💥 Сбой (все баффы отключены)',
+                    'tsunami': '🌊 Цунами Рублей (×10 дохода)',
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ (все эффекты одновременно)'
+                };
+                showNotification('🎪 Начался ивент: ' + names[chosenType] + ' на 1 минуту!', 'info');
+                setTimeout(() => {
+                    state.eventActive = false;
+                    state.eventType = '';
+                    state.eventMultiplier = 1;
+                    saveState();
+                    updateUI();
+                    showNotification('🎪 Ивент завершён!', 'info');
+                    scheduleNextEvent();
+                }, 60000);
+                if (eventsModal.classList.contains('active')) updateEventsUI();
+            }
+
+            function scheduleNextEvent() {
+                const now = Date.now();
+                state.nextEventTime = now + 5 * 60 * 1000;
+                saveState();
+                if (state.eventTimerInterval) clearInterval(state.eventTimerInterval);
+                state.eventTimerInterval = setInterval(() => {
+                    const now2 = Date.now();
+                    if (now2 >= state.nextEventTime && !state.eventActive) {
+                        clearInterval(state.eventTimerInterval);
+                        state.eventTimerInterval = null;
+                        startRandomEvent();
+                    } else {
+                        if (eventsModal.classList.contains('active')) updateEventsUI();
+                        updateUI();
+                    }
+                }, 1000);
+            }
+
+            closeEventsBtn.addEventListener('click', closeEvents);
+            eventsModal.addEventListener('click', function(e) {
+                if (e.target === eventsModal) closeEvents();
+            });
+            eventsBtn.addEventListener('click', openEvents);
+
+            // ---------- РАМКИ ----------
+            function openFrames() {
+                playClick();
+                framesModal.classList.add('open');
+                renderFrames();
+            }
+            function closeFrames() { framesModal.classList.remove('open'); }
+
+            function renderFrames() {
+                frameSlotsContainer.innerHTML = '';
+                const slots = state.savedNumbers;
+                for (let i = 0; i < 4; i++) {
+                    const slot = slots[i];
+                    const div = document.createElement('div');
+                    div.className = 'frame-slot' + (slot.firstLetter ? ' filled' : '');
+                    if (slot.firstLetter) {
+                        const full = slot.firstLetter + slot.digits + slot.twoLetters;
+                        const income = getFrameIncome(slot.firstLetter, slot.digits, slot.twoLetters);
+                        div.innerHTML = `
+                            <div class="slot-number">${full}</div>
+                            <div class="slot-region">${slot.region || '77'} 🇷🇺</div>
+                            <div class="slot-income">💰 +${income} ₽/с</div>
+                            <div class="slot-actions">
+                                <button class="danger" data-action="remove" data-index="${i}">🗑️ Удалить</button>
+                                <button data-action="move" data-index="${i}">📦 Переместить</button>
+                            </div>
+                        `;
+                        // Обработчики событий через делегирование
+                        const removeBtn = div.querySelector('[data-action="remove"]');
+                        removeBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            removeFromFrame(i);
+                        });
+                        const moveBtn = div.querySelector('[data-action="move"]');
+                        moveBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            moveFrame(i);
+                        });
+                    } else {
+                        div.innerHTML = `
+                            <div class="empty-slot">Пусто</div>
+                            <button class="save-current-btn" data-index="${i}">💾 Сохранить текущий</button>
+                        `;
+                        const saveBtn = div.querySelector('.save-current-btn');
+                        saveBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            saveToFrame(i);
+                        });
+                    }
+                    frameSlotsContainer.appendChild(div);
+                }
+            }
+
+            function saveToFrame(index) {
+                // Проверяем, занят ли слот
+                if (state.savedNumbers[index].firstLetter) {
+                    if (!confirm('Слот занят. Заменить его?')) return;
+                }
+                state.savedNumbers[index] = {
+                    firstLetter: state.firstLetter,
+                    digits: state.digits,
+                    twoLetters: state.twoLetters,
+                    region: state.region
+                };
+                saveState();
+                renderFrames();
+                updateUI();
+                playClick();
+                showNotification('✅ Номер сохранён в рамку!', 'success');
+            }
+
+            function removeFromFrame(index) {
+                if (!state.savedNumbers[index].firstLetter) return;
+                if (!confirm('Удалить номер из рамки?')) return;
+                state.savedNumbers[index] = {};
+                saveState();
+                renderFrames();
+                updateUI();
+                playClick();
+                showNotification('🗑️ Номер удалён из рамки.', 'info');
+            }
+
+            function moveFrame(index) {
+                // Показать диалог выбора слота для перемещения
+                const slots = state.savedNumbers;
+                let available = [];
+                for (let i = 0; i < 4; i++) {
+                    if (i !== index && !slots[i].firstLetter) {
+                        available.push(i);
+                    }
+                }
+                if (available.length === 0) {
+                    showNotification('❌ Нет свободных слотов для перемещения.', 'warning');
+                    return;
+                }
+                // Создаём простой диалог выбора
+                const choice = prompt('Введите номер слота (1-4) для перемещения (свободные: ' + available.map(i => i+1).join(', ') + ')');
+                if (choice === null) return;
+                const target = parseInt(choice) - 1;
+                if (isNaN(target) || target < 0 || target > 3 || target === index || slots[target].firstLetter) {
+                    showNotification('❌ Неверный слот.', 'error');
+                    return;
+                }
+                // Перемещаем
+                slots[target] = slots[index];
+                slots[index] = {};
+                saveState();
+                renderFrames();
+                updateUI();
+                playClick();
+                showNotification('📦 Номер перемещён в слот ' + (target+1), 'success');
+            }
+
+            closeFramesBtn.addEventListener('click', closeFrames);
+            framesModal.addEventListener('click', function(e) {
+                if (e.target === framesModal) closeFrames();
+            });
+            framesBtn.addEventListener('click', openFrames);
+
+            // ---------- НАСТРОЙКИ ----------
+            function openSettings() {
+                playClick();
+                settingsModal.classList.add('open');
+                regionSelect.value = state.region;
+                chkSound.checked = state.soundEnabled;
+                chkMusic.checked = state.musicEnabled;
+                themeToggle.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+                soundVolumeSlider.value = state.soundVolume;
+                soundVolumeValue.textContent = state.soundVolume;
+                musicVolumeSlider.value = state.musicVolume;
+                musicVolumeValue.textContent = state.musicVolume;
+            }
+            function closeSettings() { settingsModal.classList.remove('open'); }
+
+            soundVolumeSlider.addEventListener('input', function() {
+                state.soundVolume = parseInt(this.value);
+                soundVolumeValue.textContent = state.soundVolume;
+                saveState();
+            });
+
+            musicVolumeSlider.addEventListener('input', function() {
+                state.musicVolume = parseInt(this.value);
+                musicVolumeValue.textContent = state.musicVolume;
+                saveState();
+                updateMusicVolume();
+            });
+
+            regionSelect.addEventListener('change', function() {
+                state.region = this.value;
+                saveState();
+                regionDisplay.textContent = state.region;
+                playClick();
+            });
+
+            chkSound.addEventListener('change', function() {
+                state.soundEnabled = this.checked;
+                saveState();
+                if (this.checked) playClick();
+            });
+
+            chkMusic.addEventListener('change', function() {
+                state.musicEnabled = this.checked;
+                saveState();
+                if (this.checked) startMusic();
+                else stopMusic();
+            });
+
+            themeToggle.addEventListener('click', function() {
+                const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+                playClick();
+                this.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+            });
+
+            resetProgressBtn.addEventListener('click', function() {
+                if (confirm('Вы уверены, что хотите сбросить весь прогресс? Это необратимо!')) {
+                    state.balance = 100;
+                    state.spinCount = 0;
+                    state.boostMultiplier = 1;
+                    state.boostEndTime = 0;
+                    state.vipCardOwned = false;
+                    state.casinoBetsThisHour = 0;
+                    state.casinoLastBetTime = 0;
+                    state.ageConfirmed = false;
+                    state.usedPromoCodes = [];
+                    state.rewardLevel = 0;
+                    state.incomeMultiplier = 1;
+                    state.incomeEndTime = 0;
+                    state.eventActive = false;
+                    state.eventType = '';
+                    state.eventEndTime = 0;
+                    state.eventMultiplier = 1;
+                    state.nextEventTime = 0;
+                    if (state.eventTimerInterval) {
+                        clearInterval(state.eventTimerInterval);
+                        state.eventTimerInterval = null;
+                    }
+                    state.soundVolume = 100;
+                    state.musicVolume = 100;
+                    state.doubleReward = false;
+                    state.savedNumbers = [{}, {}, {}, {}];
+                    generateInitialNumber();
+                    saveState();
+                    updateUI();
+                    showNotification('🗑️ Прогресс полностью сброшен!', 'warning');
+                    closeSettings();
+                    casinoResultArea.innerHTML = '';
+                }
+            });
+
+            closeSettingsBtn.addEventListener('click', closeSettings);
+            settingsModal.addEventListener('click', function(e) {
+                if (e.target === settingsModal) closeSettings();
+            });
+            settingsBtn.addEventListener('click', openSettings);
+
+            // ---------- ОСНОВНЫЕ КНОПКИ ----------
+            spinLettersBtn.addEventListener('click', function() { playClick(); performSpin('letters'); });
+            spinDigitsBtn.addEventListener('click', function() { playClick(); performSpin('digits'); });
+
+            // ---------- ПАССИВНЫЙ ДОХОД ОТ РАМОК ----------
+            let framesIncomeInterval = setInterval(() => {
+                const income = getTotalFramesIncome();
+                if (income > 0) {
+                    state.balance += income;
+                    saveState();
+                    updateUI();
+                }
+            }, 1000);
+
+            // ---------- ИНИЦИАЛИЗАЦИЯ ----------
+            function init() {
+                REGIONS.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r;
+                    opt.textContent = r;
+                    regionSelect.appendChild(opt);
+                });
+
+                const loaded = loadState();
+                if (!loaded) {
+                    generateInitialNumber();
+                    state.balance = 100;
+                    state.spinCount = 0;
+                    state.boostMultiplier = 1;
+                    state.boostEndTime = 0;
+                    state.rewardLevel = 0;
+                    state.incomeMultiplier = 1;
+                    state.incomeEndTime = 0;
+                    state.eventActive = false;
+                    state.eventType = '';
+                    state.eventEndTime = 0;
+                    state.eventMultiplier = 1;
+                    state.nextEventTime = 0;
+                    state.soundVolume = 100;
+                    state.musicVolume = 100;
+                    state.savedNumbers = [{}, {}, {}, {}];
+                    state.doubleReward = false;
+                }
+
+                applyTheme(state.theme);
+                updateUI();
+
+                if (state.musicEnabled) startMusic();
+
+                // Восстановление ивентов
+                if (state.eventActive) {
+                    const now = Date.now();
+                    if (state.eventEndTime > now) {
+                        const remaining = state.eventEndTime - now;
+                        setTimeout(() => {
+                            state.eventActive = false;
+                            state.eventType = '';
+                            state.eventMultiplier = 1;
+                            saveState();
+                            updateUI();
+                            showNotification('🎪 Ивент завершён!', 'info');
+                            scheduleNextEvent();
+                        }, remaining);
+                    } else {
+                        state.eventActive = false;
+                        state.eventType = '';
+                        state.eventMultiplier = 1;
+                        saveState();
+                        updateUI();
+                        scheduleNextEvent();
+                    }
+                } else {
+                    if (state.nextEventTime === 0 || state.nextEventTime < Date.now()) {
+                        scheduleNextEvent();
+                    } else {
+                        if (state.eventTimerInterval) clearInterval(state.eventTimerInterval);
+                        state.eventTimerInterval = setInterval(() => {
+                            const now2 = Date.now();
+                            if (now2 >= state.nextEventTime && !state.eventActive) {
+                                clearInterval(state.eventTimerInterval);
+                                state.eventTimerInterval = null;
+                                startRandomEvent();
+                            } else {
+                                if (eventsModal.classList.contains('active')) updateEventsUI();
+                                updateUI();
+                            }
+                        }, 1000);
+                    }
+                }
+
+                // Периодическое обновление UI
+                setInterval(() => { updateUI(); }, 2000);
+
+                window.addEventListener('beforeunload', function() { saveState(); });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+</body>
+</html>
