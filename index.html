@@ -6,7 +6,6 @@
     <title>РУЛЕТКА-НОМЕРА</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ---------- Глобальные стили ---------- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,8 +28,6 @@
             background: #f0f4fa;
             color: #1a1f2e;
         }
-
-        /* ---------- Уведомления ---------- */
         .notification-container {
             position: fixed;
             top: 20px;
@@ -75,8 +72,6 @@
             from { opacity: 1; transform: translateY(0) scale(1); }
             to { opacity: 0; transform: translateY(-20px) scale(0.95); }
         }
-
-        /* ---------- Основной контейнер ---------- */
         .app-wrapper {
             display: flex;
             gap: 30px;
@@ -86,8 +81,6 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
-        /* ---------- Левая панель (улучшения) ---------- */
         .upgrade-panel {
             flex: 1 1 240px;
             min-width: 200px;
@@ -130,8 +123,6 @@
         .upgrade-item .value { font-weight: 600; }
         .value.active { color: #2ecc71; }
         .value.inactive { color: #e74c3c; }
-
-        /* ---------- Правая панель (игра) ---------- */
         .game-panel {
             flex: 2 1 480px;
             min-width: 320px;
@@ -149,8 +140,6 @@
             border-color: rgba(0, 0, 0, 0.06);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
         }
-
-        /* ---------- Заголовок ---------- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -165,8 +154,6 @@
             color: #4a9eff;
             text-shadow: 0 0 30px rgba(74, 158, 255, 0.2);
         }
-
-        /* ---------- Номерной знак ---------- */
         .plate-wrapper {
             display: flex;
             justify-content: center;
@@ -211,8 +198,6 @@
             letter-spacing: 1px;
         }
         .plate .region-flag span { font-size: 1.8rem; line-height: 1; }
-
-        /* ---------- Кнопки вращения ---------- */
         .spin-area {
             display: flex;
             flex-direction: column;
@@ -226,8 +211,6 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
-        /* ---------- Стеклянные кнопки (общий стиль) ---------- */
         .glass-btn {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(6px);
@@ -262,7 +245,6 @@
             cursor: not-allowed;
             transform: none;
         }
-
         .glass-btn.letters {
             background: rgba(108, 92, 231, 0.15);
             border-color: rgba(108, 92, 231, 0.4);
@@ -277,7 +259,6 @@
         .glass-btn.digits:hover {
             background: rgba(74, 158, 255, 0.3);
         }
-
         .action-btn {
             background: transparent;
             backdrop-filter: blur(4px);
@@ -307,7 +288,6 @@
             cursor: not-allowed;
             transform: none;
         }
-
         body.light .glass-btn {
             color: #1a1f2e;
             border-color: rgba(0, 0, 0, 0.15);
@@ -341,8 +321,6 @@
             background: rgba(255, 255, 255, 0.7);
             border-color: rgba(0, 0, 0, 0.4);
         }
-
-        /* ---------- Баланс и кнопки ---------- */
         .balance-row {
             display: flex;
             align-items: center;
@@ -367,8 +345,6 @@
             color: #1a1f2e;
         }
         .balance span { font-weight: 600; color: #2ecc71; }
-
-        /* ---------- Модальные окна ---------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -414,8 +390,6 @@
             transition: 0.1s;
         }
         .modal .close-modal:active { transform: scale(0.95); }
-
-        /* ---------- Элементы магазина и прокачки ---------- */
         .shop-item, .upgrade-item-modal, .event-item {
             background: rgba(255,255,255,0.04);
             border-radius: 20px;
@@ -465,7 +439,6 @@
         .shop-item .buy-btn:active:not(:disabled), .upgrade-item-modal .buy-btn:active:not(:disabled) {
             transform: scale(0.95);
         }
-        /* Промокоды в магазине */
         .promo-section {
             margin-top: 16px;
             border-top: 1px solid rgba(255,255,255,0.08);
@@ -506,8 +479,6 @@
             margin-top: 6px;
             min-height: 1.5rem;
         }
-
-        /* ---------- Настройки с ползунками громкости ---------- */
         .settings-group {
             display: flex;
             flex-direction: column;
@@ -602,8 +573,6 @@
             margin-top: 8px;
         }
         .reset-btn:active { transform: scale(0.95); }
-
-        /* ---------- Казино ---------- */
         .casino-bet-area {
             display: flex;
             flex-direction: column;
@@ -645,8 +614,6 @@
         body.light .casino-result.win { background: #d4edda; color: #155724; }
         body.light .casino-result.lose { background: #f8d7da; color: #721c24; }
         body.light .casino-result.jackpot { background: #fff3cd; color: #856404; }
-
-        /* ---------- Проверка возраста ---------- */
         .age-buttons {
             display: flex;
             gap: 20px;
@@ -666,8 +633,6 @@
         .age-buttons .no { background: #e74c3c; color: #fff; }
         .age-buttons button:active { transform: scale(0.95); }
         .age-message { font-size: 16px; margin: 10px 0; }
-
-        /* ---------- Рамки (слоты) ---------- */
         .frame-slots {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -711,6 +676,11 @@
             font-size: 0.9rem;
             color: #2ecc71;
         }
+        .frame-slot .slot-level {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            color: #f1c40f;
+        }
         .frame-slot .slot-actions {
             display: flex;
             gap: 6px;
@@ -741,6 +711,9 @@
         .frame-slot .slot-actions button.success {
             color: #2ecc71;
         }
+        .frame-slot .slot-actions button.upgrade {
+            color: #f1c40f;
+        }
         .frame-slot .empty-slot {
             opacity: 0.4;
             font-size: 0.9rem;
@@ -762,8 +735,57 @@
         .frame-slot .save-current-btn:active {
             transform: scale(0.95);
         }
-
-        /* ---------- Адаптив ---------- */
+        .casino-boost-btn {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border: none;
+            border-radius: 60px;
+            color: #1a1f2e;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 6px;
+        }
+        .casino-boost-btn:hover {
+            transform: scale(1.02);
+        }
+        .casino-boost-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .shop-extra-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 4px 0;
+        }
+        .shop-extra-row .price {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2ecc71;
+        }
+        .shop-extra-row .buy-btn {
+            background: linear-gradient(135deg, #4a9eff, #2c7cb8);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.1s;
+        }
+        .shop-extra-row .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shop-extra-row .buy-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
         @media (max-width: 750px) {
             .app-wrapper { flex-direction: column; align-items: center; }
             .upgrade-panel { width: 100%; max-width: 480px; }
@@ -781,12 +803,8 @@
     </style>
 </head>
 <body>
-    <!-- Контейнер уведомлений -->
     <div class="notification-container" id="notificationContainer"></div>
-
-    <!-- Основной контейнер -->
     <div class="app-wrapper">
-        <!-- Левая панель: улучшения -->
         <div class="upgrade-panel" id="upgradePanel">
             <h3>⚡ УЛУЧШЕНИЯ</h3>
             <div class="upgrade-item">
@@ -810,8 +828,8 @@
                 <span class="value" id="rewardDisplay">100 ₽</span>
             </div>
             <div class="upgrade-item">
-                <span class="label">ИКС2 НАГРАДА</span>
-                <span class="value" id="doubleRewardDisplay">❌</span>
+                <span class="label">Множитель награды</span>
+                <span class="value" id="multiplierDisplay">×1</span>
             </div>
             <div class="upgrade-item">
                 <span class="label">Активный ивент</span>
@@ -822,14 +840,10 @@
                 <span class="value" id="framesIncomeDisplay">0 ₽/с</span>
             </div>
         </div>
-
-        <!-- Правая панель: игра -->
         <div class="game-panel">
             <div class="header">
                 <h1>🎲 РУЛЕТКА-НОМЕРА</h1>
             </div>
-
-            <!-- Номерной знак -->
             <div class="plate-wrapper">
                 <div class="plate" id="plate">
                     <div class="number-display" id="numberDisplay">А123ВС</div>
@@ -839,14 +853,11 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Кнопки вращения -->
             <div class="spin-area">
                 <div class="spin-row">
                     <button class="glass-btn letters" id="spinLettersBtn">🔤 КРУТИТЬ БУКВЫ</button>
                     <button class="glass-btn digits" id="spinDigitsBtn">🔢 КРУТИТЬ ЦИФРЫ</button>
                 </div>
-                <!-- Баланс и кнопки действий -->
                 <div class="balance-row">
                     <div class="balance">💰 <span id="balanceDisplay">100</span> ₽</div>
                     <button class="action-btn" id="shopBtn">🏪 Магазин</button>
@@ -860,68 +871,51 @@
         </div>
     </div>
 
-    <!-- Модальное окно магазина -->
     <div class="modal-overlay" id="shopModal">
         <div class="modal">
             <h2>🏪 МАГАЗИН</h2>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>🚀 Ускоритель ×3</strong>
-                    <small>Вращение в 3 раза быстрее на 5 минут</small>
-                </div>
-                <div>
-                    <div class="price" id="priceBoost3">10 000 ₽</div>
-                    <button class="buy-btn" id="buyBoost3Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>🚀 Ускоритель ×3</strong><small>Вращение в 3 раза быстрее на 5 минут</small></div>
+                <div><div class="price" id="priceBoost3">10 000 ₽</div><button class="buy-btn" id="buyBoost3Btn">Купить</button></div>
             </div>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>⚡ Ускоритель ×10</strong>
-                    <small>Вращение в 10 раз быстрее на 5 минут</small>
-                </div>
-                <div>
-                    <div class="price" id="priceBoost10">21 000 ₽</div>
-                    <button class="buy-btn" id="buyBoost10Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>⚡ Ускоритель ×10</strong><small>Вращение в 10 раз быстрее на 5 минут</small></div>
+                <div><div class="price" id="priceBoost10">21 000 ₽</div><button class="buy-btn" id="buyBoost10Btn">Купить</button></div>
             </div>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>💥 Ускоритель ×100</strong>
-                    <small>Вращение в 100 раз быстрее на 5 минут</small>
-                </div>
-                <div>
-                    <div class="price" id="priceBoost100">100 000 ₽</div>
-                    <button class="buy-btn" id="buyBoost100Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>💥 Ускоритель ×100</strong><small>Вращение в 100 раз быстрее на 5 минут</small></div>
+                <div><div class="price" id="priceBoost100">100 000 ₽</div><button class="buy-btn" id="buyBoost100Btn">Купить</button></div>
             </div>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>💳 VIP-карта</strong>
-                    <small>Увеличивает лимит ставок в казино до 100 000 в час</small>
-                </div>
-                <div>
-                    <div class="price" id="priceVip">1 000 000 ₽</div>
-                    <button class="buy-btn" id="buyVipCardBtn">Купить</button>
-                </div>
+                <div class="desc"><strong>💳 VIP-карта</strong><small>Увеличивает лимит ставок в казино до 100 000 в час</small></div>
+                <div><div class="price" id="priceVip">1 000 000 ₽</div><button class="buy-btn" id="buyVipCardBtn">Купить</button></div>
             </div>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>💰 Удвоение дохода</strong>
-                    <small>В 2 раза больше денег за прокрут на 1 минуту</small>
-                </div>
-                <div>
-                    <div class="price" id="priceIncome2">100 000 ₽</div>
-                    <button class="buy-btn" id="buyIncome2Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>💰 Удвоение дохода</strong><small>В 2 раза больше денег за прокрут на 1 минуту</small></div>
+                <div><div class="price" id="priceIncome2">100 000 ₽</div><button class="buy-btn" id="buyIncome2Btn">Купить</button></div>
             </div>
             <div class="shop-item">
-                <div class="desc">
-                    <strong>💎 Увеличение дохода ×5</strong>
-                    <small>В 5 раз больше денег за прокрут на 5 минут</small>
-                </div>
-                <div>
-                    <div class="price" id="priceIncome5">10 000 000 ₽</div>
-                    <button class="buy-btn" id="buyIncome5Btn">Купить</button>
+                <div class="desc"><strong>💎 Увеличение дохода ×5</strong><small>В 5 раз больше денег за прокрут на 5 минут</small></div>
+                <div><div class="price" id="priceIncome5">10 000 000 ₽</div><button class="buy-btn" id="buyIncome5Btn">Купить</button></div>
+            </div>
+            <div class="shop-item">
+                <div class="desc"><strong>🖼️ Дополнительная рамка</strong><small>Увеличивает количество слотов для сохранения номеров</small></div>
+                <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
+                    <div class="shop-extra-row">
+                        <span>1 рамка</span>
+                        <span class="price" id="priceExtraSlot1">10 000 ₽</span>
+                        <button class="buy-btn" id="buyExtraSlot1Btn">Купить</button>
+                    </div>
+                    <div class="shop-extra-row">
+                        <span>10 рамок</span>
+                        <span class="price" id="priceExtraSlot10">100 000 ₽</span>
+                        <button class="buy-btn" id="buyExtraSlot10Btn">Купить</button>
+                    </div>
+                    <div class="shop-extra-row">
+                        <span>100 рамок</span>
+                        <span class="price" id="priceExtraSlot100">1 000 000 ₽</span>
+                        <button class="buy-btn" id="buyExtraSlot100Btn">Купить</button>
+                    </div>
                 </div>
             </div>
             <div class="promo-section">
@@ -936,7 +930,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно казино -->
     <div class="modal-overlay" id="casinoModal">
         <div class="modal">
             <h2>🎰 КАЗИНО</h2>
@@ -945,16 +938,16 @@
                 <label style="font-weight:bold;">Ваша ставка (рубли):</label>
                 <input type="number" id="casinoBetInput" value="100" min="1" step="1">
                 <div class="bet-info">💰 Доступно: <span id="casinoBalanceDisplay">0</span> ₽</div>
-                <div class="bet-info">🎲 Шансы: Белый (×100) — 0.1%, Жёлтый (×10) — 1%, Красный (×2) — 28.9%, Чёрный (0) — 70%</div>
+                <div class="bet-info" id="casinoOddsDisplay">🎲 Шансы: Зелёный (×1000) — 0.01%, Белый (×100) — 0.1%, Жёлтый (×10) — 1%, Красный (×2) — 28.9%, Чёрный (0) — 70%</div>
                 <div class="bet-info">⏳ Осталось ставок в час: <span id="casinoBetsLeft">100</span></div>
                 <button id="casinoSpinBtn" class="glass-btn" style="width:100%; margin-top:6px; background: rgba(241,196,15,0.2); border-color: rgba(241,196,15,0.4);">🎲 КРУТИТЬ</button>
+                <button id="casinoBoostBtn" class="casino-boost-btn">🔥 ПОВЫСИТЬ ШАНСЫ (50% баланса)</button>
             </div>
             <div id="casinoResultArea"></div>
             <button class="close-modal" id="closeCasinoBtn">Закрыть</button>
         </div>
     </div>
 
-    <!-- Проверка возраста -->
     <div class="modal-overlay" id="ageModal">
         <div class="modal">
             <h2>🔞 ПРОВЕРКА ВОЗРАСТА</h2>
@@ -967,65 +960,53 @@
         </div>
     </div>
 
-    <!-- Модальное окно прокачки -->
     <div class="modal-overlay" id="upgradeModal">
         <div class="modal">
             <h2>🔧 ПРОКАЧКА</h2>
             <div class="upgrade-item-modal" id="upgradeLevel1">
-                <div class="desc">
-                    <strong>📈 1 000 ₽ за прокрут</strong>
-                    <small>Повышает награду до 1 000 ₽ за каждое вращение</small>
-                </div>
-                <div>
-                    <div class="price">100 000 ₽</div>
-                    <button class="buy-btn" id="buyUpgrade1Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>📈 1 000 ₽ за прокрут</strong><small>Повышает награду до 1 000 ₽ за каждое вращение</small></div>
+                <div><div class="price">100 000 ₽</div><button class="buy-btn" id="buyUpgrade1Btn">Купить</button></div>
             </div>
             <div class="upgrade-item-modal" id="upgradeLevel2">
-                <div class="desc">
-                    <strong>📈 10 000 ₽ за прокрут</strong>
-                    <small>Повышает награду до 10 000 ₽ за каждое вращение</small>
-                </div>
-                <div>
-                    <div class="price">1 000 000 ₽</div>
-                    <button class="buy-btn" id="buyUpgrade2Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>📈 10 000 ₽ за прокрут</strong><small>Повышает награду до 10 000 ₽ за каждое вращение</small></div>
+                <div><div class="price">1 000 000 ₽</div><button class="buy-btn" id="buyUpgrade2Btn">Купить</button></div>
             </div>
             <div class="upgrade-item-modal" id="upgradeLevel3">
-                <div class="desc">
-                    <strong>📈 100 000 ₽ за прокрут</strong>
-                    <small>Повышает награду до 100 000 ₽ за каждое вращение</small>
-                </div>
-                <div>
-                    <div class="price">100 000 000 ₽</div>
-                    <button class="buy-btn" id="buyUpgrade3Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>📈 100 000 ₽ за прокрут</strong><small>Повышает награду до 100 000 ₽ за каждое вращение</small></div>
+                <div><div class="price">100 000 000 ₽</div><button class="buy-btn" id="buyUpgrade3Btn">Купить</button></div>
             </div>
             <div class="upgrade-item-modal" id="upgradeLevel4">
-                <div class="desc">
-                    <strong>📈 1 000 000 ₽ за прокрут</strong>
-                    <small>Повышает награду до 1 000 000 ₽ за каждое вращение</small>
-                </div>
-                <div>
-                    <div class="price">21 000 000 000 ₽</div>
-                    <button class="buy-btn" id="buyUpgrade4Btn">Купить</button>
-                </div>
+                <div class="desc"><strong>📈 1 000 000 ₽ за прокрут</strong><small>Повышает награду до 1 000 000 ₽ за каждое вращение</small></div>
+                <div><div class="price">21 000 000 000 ₽</div><button class="buy-btn" id="buyUpgrade4Btn">Купить</button></div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeLevel5">
+                <div class="desc"><strong>📈 1 000 000 000 ₽ за прокрут</strong><small>Повышает награду до 1 млрд за вращение</small></div>
+                <div><div class="price">1 000 000 000 000 ₽</div><button class="buy-btn" id="buyUpgrade5Btn">Купить</button></div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeLevel6">
+                <div class="desc"><strong>📈 10 000 000 000 ₽ за прокрут</strong><small>Повышает награду до 10 млрд за вращение</small></div>
+                <div><div class="price">100 000 000 000 000 ₽</div><button class="buy-btn" id="buyUpgrade6Btn">Купить</button></div>
             </div>
             <div class="upgrade-item-modal" id="upgradeDoubleReward">
-                <div class="desc">
-                    <strong>✖️2 ИКС2 НАГРАДА</strong>
-                    <small>Удваивает доход за каждый прокрут (постоянно)</small>
-                </div>
-                <div>
-                    <div class="price" id="priceDoubleReward">5 000 000 ₽</div>
-                    <button class="buy-btn" id="buyDoubleRewardBtn">Купить</button>
-                </div>
+                <div class="desc"><strong>✖️2 ИКС2 НАГРАДА</strong><small>Удваивает доход за каждый прокрут (постоянно)</small></div>
+                <div><div class="price" id="priceDoubleReward">5 000 000 ₽</div><button class="buy-btn" id="buyDoubleRewardBtn">Купить</button></div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeX5Reward">
+                <div class="desc"><strong>✖️5 ИКС5 НАГРАДА</strong><small>Увеличивает множитель награды ×5 (постоянно)</small></div>
+                <div><div class="price" id="priceX5Reward">100 000 000 ₽</div><button class="buy-btn" id="buyX5RewardBtn">Купить</button></div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeX10Reward">
+                <div class="desc"><strong>✖️10 ИКС10 НАГРАДА</strong><small>Увеличивает множитель награды ×10 (постоянно)</small></div>
+                <div><div class="price" id="priceX10Reward">10 000 000 000 ₽</div><button class="buy-btn" id="buyX10RewardBtn">Купить</button></div>
+            </div>
+            <div class="upgrade-item-modal" id="upgradeX100Reward">
+                <div class="desc"><strong>✖️100 ИКС100 НАГРАДА</strong><small>Увеличивает множитель награды ×100 (постоянно)</small></div>
+                <div><div class="price" id="priceX100Reward">10 000 000 000 000 000 ₽</div><button class="buy-btn" id="buyX100RewardBtn">Купить</button></div>
             </div>
             <button class="close-modal" id="closeUpgradeBtn">Закрыть</button>
         </div>
     </div>
 
-    <!-- Модальное окно ивентов -->
     <div class="modal-overlay" id="eventsModal">
         <div class="modal">
             <h2>🎪 ИВЕНТЫ</h2>
@@ -1043,26 +1024,28 @@
                 <div class="event-item"><div class="desc"><strong>💥 Сбой</strong><small>Все баффы отключаются на 1 минуту</small></div></div>
                 <div class="event-item"><div class="desc"><strong>🌊 Цунами Рублей</strong><small>Награда за прокрут ×10</small></div></div>
                 <div class="event-item"><div class="desc"><strong>🎉 ВСЕ ИВЕНТЫ</strong><small>Включаются все эффекты одновременно (шанс 1%)</small></div></div>
+                <div class="event-item"><div class="desc"><strong>🎲 ВЕЗЕНИЕ КОМБИНАЦИЙ</strong><small>Увеличен шанс одинаковых цифр/букв в 5 раз</small></div></div>
             </div>
             <button class="close-modal" id="closeEventsBtn">Закрыть</button>
         </div>
     </div>
 
-    <!-- Модальное окно рамок -->
     <div class="modal-overlay" id="framesModal">
         <div class="modal">
             <h2>🖼️ РАМКИ</h2>
             <p style="font-size:14px; opacity:0.8; margin-bottom:12px;">
                 Сохраняйте любимые номера. Каждая рамка приносит пассивный доход.
+                <br>Обычный номер — 10 ₽/с | Одинаковые цифры или буквы — 100 ₽/с
+                <br>021 или 067 — 10 000 ₽/с | 021/067 + одинаковые буквы — 20 000 ₽/с
+                <br>Одинаковые цифры И буквы — 1000 ₽/с | ЛОХ — 1 000 000 ₽/с | ПАНДА21 — 1 000 000 000 ₽/с
+                <br>Уровень прокачки увеличивает доход в 10 раз за уровень. Стоимость прокачки = текущий доход × 1000.
+                <br>Всего слотов: <span id="totalSlotsDisplay">4</span> (макс. 1000)
             </p>
-            <div class="frame-slots" id="frameSlotsContainer">
-                <!-- 4 слота будут сгенерированы JS -->
-            </div>
+            <div class="frame-slots" id="frameSlotsContainer"></div>
             <button class="close-modal" id="closeFramesBtn">Закрыть</button>
         </div>
     </div>
 
-    <!-- Модальное окно настроек -->
     <div class="modal-overlay settings-modal" id="settingsModal">
         <div class="modal">
             <h2>⚙️ НАСТРОЙКИ</h2>
@@ -1094,13 +1077,10 @@
     <script>
         (function() {
             "use strict";
-
-            // ---------- КОНСТАНТЫ ----------
             const LETTERS = ['А','В','Е','К','М','Н','О','Р','С','Т','У','Х'];
             const REGIONS = [];
             for (let i = 1; i <= 199; i++) REGIONS.push(String(i).padStart(2, '0'));
 
-            // ---------- DOM ----------
             const numberDisplay = document.getElementById('numberDisplay');
             const regionDisplay = document.getElementById('regionDisplay');
             const balanceSpan = document.getElementById('balanceDisplay');
@@ -1109,7 +1089,7 @@
             const speedUpgradeDisplay = document.getElementById('speedUpgradeDisplay');
             const boostDisplay = document.getElementById('boostDisplay');
             const rewardDisplay = document.getElementById('rewardDisplay');
-            const doubleRewardDisplay = document.getElementById('doubleRewardDisplay');
+            const multiplierDisplay = document.getElementById('multiplierDisplay');
             const framesIncomeDisplay = document.getElementById('framesIncomeDisplay');
             const eventDisplay = document.getElementById('eventDisplay');
             const regionSelect = document.getElementById('regionSelect');
@@ -1135,6 +1115,8 @@
             const casinoBetsLeft = document.getElementById('casinoBetsLeft');
             const casinoSpinBtn = document.getElementById('casinoSpinBtn');
             const casinoResultArea = document.getElementById('casinoResultArea');
+            const casinoOddsDisplay = document.getElementById('casinoOddsDisplay');
+            const casinoBoostBtn = document.getElementById('casinoBoostBtn');
             const ageModal = document.getElementById('ageModal');
             const ageMessage = document.getElementById('ageMessage');
             const settingsModal = document.getElementById('settingsModal');
@@ -1151,8 +1133,16 @@
             const buyUpgrade2Btn = document.getElementById('buyUpgrade2Btn');
             const buyUpgrade3Btn = document.getElementById('buyUpgrade3Btn');
             const buyUpgrade4Btn = document.getElementById('buyUpgrade4Btn');
+            const buyUpgrade5Btn = document.getElementById('buyUpgrade5Btn');
+            const buyUpgrade6Btn = document.getElementById('buyUpgrade6Btn');
             const buyDoubleRewardBtn = document.getElementById('buyDoubleRewardBtn');
             const priceDoubleReward = document.getElementById('priceDoubleReward');
+            const buyX5RewardBtn = document.getElementById('buyX5RewardBtn');
+            const priceX5Reward = document.getElementById('priceX5Reward');
+            const buyX10RewardBtn = document.getElementById('buyX10RewardBtn');
+            const priceX10Reward = document.getElementById('priceX10Reward');
+            const buyX100RewardBtn = document.getElementById('buyX100RewardBtn');
+            const priceX100Reward = document.getElementById('priceX100Reward');
             const eventsBtn = document.getElementById('eventsBtn');
             const eventsModal = document.getElementById('eventsModal');
             const closeEventsBtn = document.getElementById('closeEventsBtn');
@@ -1166,6 +1156,7 @@
             const framesModal = document.getElementById('framesModal');
             const closeFramesBtn = document.getElementById('closeFramesBtn');
             const frameSlotsContainer = document.getElementById('frameSlotsContainer');
+            const totalSlotsDisplay = document.getElementById('totalSlotsDisplay');
 
             const priceBoost3 = document.getElementById('priceBoost3');
             const priceBoost10 = document.getElementById('priceBoost10');
@@ -1173,8 +1164,14 @@
             const priceVip = document.getElementById('priceVip');
             const priceIncome2 = document.getElementById('priceIncome2');
             const priceIncome5 = document.getElementById('priceIncome5');
+            // Новые элементы для рамок
+            const priceExtraSlot1 = document.getElementById('priceExtraSlot1');
+            const priceExtraSlot10 = document.getElementById('priceExtraSlot10');
+            const priceExtraSlot100 = document.getElementById('priceExtraSlot100');
+            const buyExtraSlot1Btn = document.getElementById('buyExtraSlot1Btn');
+            const buyExtraSlot10Btn = document.getElementById('buyExtraSlot10Btn');
+            const buyExtraSlot100Btn = document.getElementById('buyExtraSlot100Btn');
 
-            // ---------- УВЕДОМЛЕНИЯ ----------
             const notificationContainer = document.getElementById('notificationContainer');
 
             function showNotification(message, type = 'info', duration = 4000) {
@@ -1213,7 +1210,6 @@
                 }, duration + 500);
             }
 
-            // ---------- ФОРМАТИРОВАНИЕ ЧИСЕЛ ----------
             function formatNumber(n) {
                 if (n === undefined || n === null) return '0';
                 if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T';
@@ -1223,7 +1219,6 @@
                 return n.toString();
             }
 
-            // ---------- СОСТОЯНИЕ ----------
             let state = {
                 region: '77',
                 firstLetter: 'А',
@@ -1252,11 +1247,23 @@
                 eventTimerInterval: null,
                 soundVolume: 100,
                 musicVolume: 100,
-                savedNumbers: [{}, {}, {}, {}], // 4 слота: { firstLetter, digits, twoLetters, region }
-                doubleReward: false
+                savedNumbers: [{}, {}, {}, {}],
+                doubleReward: false,
+                extraSlots: 0,
+                usedCombinations: [],
+                casinoBoosted: false,
+                casinoBoostLastTime: 0,
+                rewardX5: false,
+                rewardX10: false,
+                rewardX100: false,
+                guaranteedDigits: null,
+                guaranteedLetters: null,
+                exclusiveNumber: null,
+                lohCount: 0,
+                pandaUsed: false,
+                guaranteedExclusive: null
             };
 
-            // ---------- АУДИО ----------
             let audioCtx = null;
             let musicInterval = null;
             let musicGainNode = null;
@@ -1307,7 +1314,6 @@
                 } catch (e) {}
             }
 
-            // ---------- МУЗЫКА ----------
             function startMusic() {
                 stopMusic();
                 if (!state.musicEnabled) return;
@@ -1354,8 +1360,10 @@
                 }
             }
 
-            // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
             function getFullNumber() {
+                if (state.exclusiveNumber) {
+                    return state.exclusiveNumber;
+                }
                 return state.firstLetter + state.digits + state.twoLetters;
             }
 
@@ -1374,7 +1382,16 @@
                 return Math.max(100, Math.floor(base * effectiveMult));
             }
 
-            // Базовая награда с учётом ивентов (кроме crash)
+            function getTotalRewardMultiplier() {
+                let mult = 1;
+                if (state.doubleReward) mult *= 2;
+                if (state.rewardX5) mult *= 5;
+                if (state.rewardX10) mult *= 10;
+                if (state.rewardX100) mult *= 100;
+                if (mult > 100) mult = 100;
+                return mult;
+            }
+
             function getBaseSpinReward() {
                 const level = state.rewardLevel;
                 let base = 100;
@@ -1382,6 +1399,8 @@
                 else if (level === 2) base = 10000;
                 else if (level === 3) base = 100000;
                 else if (level === 4) base = 1000000;
+                else if (level === 5) base = 1000000000;
+                else if (level === 6) base = 10000000000;
                 let mult = 1;
                 if (!(state.eventActive && state.eventType === 'crash')) {
                     if (state.eventActive && state.eventType === 'rain') mult *= 1.5;
@@ -1389,11 +1408,10 @@
                     else if (state.eventActive && state.eventType === 'tsunami') mult *= 10;
                     if (Date.now() < state.incomeEndTime) mult *= state.incomeMultiplier;
                 }
-                if (state.doubleReward) mult *= 2;
+                mult *= getTotalRewardMultiplier();
                 return Math.floor(base * mult);
             }
 
-            // Эффективная цена с учётом скидки/антискидки
             function getEffectivePrice(originalPrice) {
                 let price = originalPrice;
                 if (state.eventActive && state.eventType === 'discount') {
@@ -1404,28 +1422,62 @@
                 return price;
             }
 
-            // Проверка комбинаций для дохода рамок
-            function getFrameIncome(firstLetter, digits, twoLetters) {
-                const letters = firstLetter + twoLetters;
-                const isDigitsSame = digits[0] === digits[1] && digits[1] === digits[2];
-                const isDigitsSpecial = digits === '021' || digits === '067';
-                const isLettersSame = letters[0] === letters[1] && letters[1] === letters[2];
-                const isDigitsSpecialOrSame = isDigitsSame || isDigitsSpecial;
-
-                if (isDigitsSpecialOrSame && isLettersSame) return 1000;
-                if (isDigitsSpecialOrSame || isLettersSame) return 100;
-                return 10;
+            // --- Новая функция дохода рамки с учётом уровня ---
+            function getFrameIncome(slot) {
+                if (!slot) return 0;
+                let base = 0;
+                if (slot.exclusiveType === 'LOH') base = 1000000;
+                else if (slot.exclusiveType === 'PANDA21') base = 1000000000;
+                else if (slot.firstLetter) {
+                    const digits = slot.digits;
+                    const letters = slot.firstLetter + slot.twoLetters;
+                    const digitsSame = digits[0] === digits[1] && digits[1] === digits[2];
+                    const digitsSpecial = digits === '021' || digits === '067';
+                    const lettersSame = letters[0] === letters[1] && letters[1] === letters[2];
+                    if (digitsSpecial && lettersSame) base = 20000;
+                    else if (digitsSpecial) base = 10000;
+                    else if (digitsSame && lettersSame) base = 1000;
+                    else if (digitsSame || lettersSame) base = 100;
+                    else base = 10;
+                } else {
+                    return 0;
+                }
+                const level = slot.level || 0;
+                return base * Math.pow(10, level);
             }
+            // --------------------------------------------------
 
-            // Общий доход от всех рамок
             function getTotalFramesIncome() {
                 let total = 0;
                 for (let slot of state.savedNumbers) {
-                    if (slot.firstLetter && slot.digits && slot.twoLetters) {
-                        total += getFrameIncome(slot.firstLetter, slot.digits, slot.twoLetters);
+                    if (slot && (slot.firstLetter || slot.exclusiveType)) {
+                        total += getFrameIncome(slot);
                     }
                 }
                 return total;
+            }
+
+            function getRandomDigitsWithLuck() {
+                if (state.eventActive && state.eventType === 'combo_luck' && Math.random() < 0.05) {
+                    const d = Math.floor(Math.random() * 10);
+                    return String(d).repeat(3);
+                } else {
+                    let d = '';
+                    for (let i = 0; i < 3; i++) d += Math.floor(Math.random() * 10);
+                    return d;
+                }
+            }
+
+            function getRandomLettersWithLuck() {
+                if (state.eventActive && state.eventType === 'combo_luck' && Math.random() < 0.0347) {
+                    const l = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                    return { first: l, two: l + l };
+                } else {
+                    const first = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                    let two = '';
+                    for (let i = 0; i < 2; i++) two += LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                    return { first: first, two: two };
+                }
             }
 
             function updateUI() {
@@ -1452,20 +1504,13 @@
                 const dur = getSpinDuration();
                 spinTimeDisplay.textContent = (dur / 1000).toFixed(1) + ' с';
 
-                // ИКС2 НАГРАДА
-                if (state.doubleReward) {
-                    doubleRewardDisplay.textContent = '✅';
-                    doubleRewardDisplay.className = 'value active';
-                } else {
-                    doubleRewardDisplay.textContent = '❌';
-                    doubleRewardDisplay.className = 'value inactive';
-                }
+                const totalMult = getTotalRewardMultiplier();
+                multiplierDisplay.textContent = '×' + totalMult;
+                multiplierDisplay.className = totalMult > 1 ? 'value active' : 'value inactive';
 
-                // Доход от рамок
                 const income = getTotalFramesIncome();
                 framesIncomeDisplay.textContent = income + ' ₽/с';
 
-                // Активный ивент
                 const names = {
                     'rain': '💰 Денежный дождь',
                     'discount': '🏷️ Скидочка',
@@ -1475,7 +1520,8 @@
                     'anti_spin': '🐢 Анти-прокрут',
                     'crash': '💥 Сбой',
                     'tsunami': '🌊 Цунами Рублей',
-                    'all_events': '🎉 ВСЕ ИВЕНТЫ'
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ',
+                    'combo_luck': '🎲 ВЕЗЕНИЕ КОМБИНАЦИЙ'
                 };
                 if (state.eventActive) {
                     const remaining = Math.max(0, Math.ceil((state.eventEndTime - Date.now()) / 1000));
@@ -1487,7 +1533,6 @@
                     eventDisplay.className = 'value inactive';
                 }
 
-                // Блокировка магазина
                 if (state.eventActive && state.eventType === 'shop_block') {
                     shopBtn.disabled = true;
                     const remaining = Math.max(0, Math.ceil((state.eventEndTime - Date.now()) / 1000));
@@ -1509,6 +1554,7 @@
                 soundVolumeValue.textContent = state.soundVolume;
                 musicVolumeSlider.value = state.musicVolume;
                 musicVolumeValue.textContent = state.musicVolume;
+                if (totalSlotsDisplay) totalSlotsDisplay.textContent = 4 + state.extraSlots;
             }
 
             function saveState() {
@@ -1540,7 +1586,20 @@
                     soundVolume: state.soundVolume,
                     musicVolume: state.musicVolume,
                     savedNumbers: state.savedNumbers,
-                    doubleReward: state.doubleReward
+                    doubleReward: state.doubleReward,
+                    extraSlots: state.extraSlots,
+                    usedCombinations: state.usedCombinations,
+                    casinoBoosted: state.casinoBoosted,
+                    casinoBoostLastTime: state.casinoBoostLastTime,
+                    rewardX5: state.rewardX5,
+                    rewardX10: state.rewardX10,
+                    rewardX100: state.rewardX100,
+                    guaranteedDigits: state.guaranteedDigits,
+                    guaranteedLetters: state.guaranteedLetters,
+                    exclusiveNumber: state.exclusiveNumber,
+                    lohCount: state.lohCount,
+                    pandaUsed: state.pandaUsed,
+                    guaranteedExclusive: state.guaranteedExclusive
                 };
                 localStorage.setItem('rouletteNumberState', JSON.stringify(data));
             }
@@ -1576,13 +1635,32 @@
                     state.nextEventTime = data.nextEventTime || 0;
                     state.soundVolume = data.soundVolume || 100;
                     state.musicVolume = data.musicVolume || 100;
+                    // Убедимся, что у слотов есть level
                     state.savedNumbers = data.savedNumbers || [{}, {}, {}, {}];
+                    state.savedNumbers = state.savedNumbers.map(slot => {
+                        if (slot && typeof slot === 'object' && !('level' in slot)) {
+                            slot.level = 0;
+                        }
+                        return slot;
+                    });
                     state.doubleReward = data.doubleReward || false;
+                    state.extraSlots = data.extraSlots || 0;
+                    state.usedCombinations = data.usedCombinations || [];
+                    state.casinoBoosted = data.casinoBoosted || false;
+                    state.casinoBoostLastTime = data.casinoBoostLastTime || 0;
+                    state.rewardX5 = data.rewardX5 || false;
+                    state.rewardX10 = data.rewardX10 || false;
+                    state.rewardX100 = data.rewardX100 || false;
+                    state.guaranteedDigits = data.guaranteedDigits || null;
+                    state.guaranteedLetters = data.guaranteedLetters || null;
+                    state.exclusiveNumber = data.exclusiveNumber || null;
+                    state.lohCount = data.lohCount || 0;
+                    state.pandaUsed = data.pandaUsed || false;
+                    state.guaranteedExclusive = data.guaranteedExclusive || null;
                     return true;
                 } catch (e) { return false; }
             }
 
-            // ---------- ТЕМА ----------
             function applyTheme(theme) {
                 document.body.className = theme;
                 themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
@@ -1590,7 +1668,6 @@
                 saveState();
             }
 
-            // ---------- ГЕНЕРАЦИЯ СЛУЧАЙНЫХ ЧАСТЕЙ ----------
             function randomDigits() {
                 let d = '';
                 for (let i = 0; i < 3; i++) d += Math.floor(Math.random() * 10);
@@ -1610,13 +1687,27 @@
                 state.twoLetters = randomTwoLetters();
             }
 
-            // ---------- РАЗДЕЛЬНОЕ ВРАЩЕНИЕ ----------
             let spinningLetters = false;
             let spinningDigits = false;
 
             function performSpin(action) {
                 if (action === 'letters' && spinningLetters) return;
                 if (action === 'digits' && spinningDigits) return;
+
+                if (state.guaranteedExclusive) {
+                    state.exclusiveNumber = state.guaranteedExclusive;
+                    state.guaranteedExclusive = null;
+                    let reward = getBaseSpinReward();
+                    state.spinCount += 1;
+                    state.balance += reward;
+                    saveState();
+                    updateUI();
+                    playClick();
+                    showNotification('🎉 Выпал эксклюзивный номер ' + state.exclusiveNumber + '! +' + formatNumber(reward) + ' ₽', 'success');
+                    return;
+                }
+
+                state.exclusiveNumber = null;
 
                 const btn = action === 'letters' ? spinLettersBtn : spinDigitsBtn;
                 if (action === 'letters') spinningLetters = true;
@@ -1625,15 +1716,29 @@
 
                 playSpinTick();
                 const duration = getSpinDuration();
+
                 let finalFirst = state.firstLetter;
                 let finalDigits = state.digits;
                 let finalTwo = state.twoLetters;
 
                 if (action === 'digits') {
-                    finalDigits = randomDigits();
+                    if (state.guaranteedDigits !== null) {
+                        finalDigits = state.guaranteedDigits;
+                        state.guaranteedDigits = null;
+                    } else {
+                        finalDigits = getRandomDigitsWithLuck();
+                    }
                 } else if (action === 'letters') {
-                    finalFirst = randomFirstLetter();
-                    finalTwo = randomTwoLetters();
+                    if (state.guaranteedLetters !== null) {
+                        const letters = state.guaranteedLetters;
+                        finalFirst = letters[0];
+                        finalTwo = letters[1] + letters[2];
+                        state.guaranteedLetters = null;
+                    } else {
+                        const lettersResult = getRandomLettersWithLuck();
+                        finalFirst = lettersResult.first;
+                        finalTwo = lettersResult.two;
+                    }
                 }
 
                 const startTime = Date.now();
@@ -1645,31 +1750,77 @@
                         if (action === 'digits') state.digits = finalDigits;
                         else { state.firstLetter = finalFirst; state.twoLetters = finalTwo; }
 
+                        let exclusiveDropped = false;
+                        const rand = Math.random();
+                        if (rand < 0.005) {
+                            let available = [];
+                            if (state.lohCount < 10) available.push('LOH');
+                            if (!state.pandaUsed) available.push('PANDA21');
+                            if (available.length > 0) {
+                                const chosen = available[Math.floor(Math.random() * available.length)];
+                                if (chosen === 'LOH') {
+                                    state.lohCount++;
+                                    state.exclusiveNumber = 'ЛОХ';
+                                    exclusiveDropped = true;
+                                    showNotification('🎉 Вам выпал эксклюзивный номер ЛОХ! (можно сохранить в рамки)', 'success');
+                                } else if (chosen === 'PANDA21') {
+                                    state.pandaUsed = true;
+                                    state.exclusiveNumber = 'ПАНДА21';
+                                    exclusiveDropped = true;
+                                    showNotification('🎉 Вам выпал эксклюзивный номер ПАНДА21! (можно сохранить в рамки)', 'success');
+                                }
+                            }
+                        }
+
                         let reward = getBaseSpinReward();
-                        let bonusMult = 1;
-                        let bonusMsg = '';
+                        if (!state.exclusiveNumber) {
+                            let bonusMult = 1;
+                            let bonusMsg = '';
+                            const digits = state.digits;
+                            const letters = state.firstLetter + state.twoLetters;
+                            let comboKey = '';
+                            let isBonus = false;
 
-                        const digits = state.digits;
-                        if (digits[0] === digits[1] && digits[1] === digits[2]) {
-                            bonusMult *= 10;
-                            bonusMsg += ' Все цифры одинаковые! ×10';
-                        } else if (digits === '021') {
-                            bonusMult *= 21;
-                            bonusMsg += ' Комбинация 021! ×21';
-                        } else if (digits === '067') {
-                            bonusMult *= 67;
-                            bonusMsg += ' Комбинация 067! ×67';
-                        }
+                            if (digits[0] === digits[1] && digits[1] === digits[2]) {
+                                comboKey = 'digits_same_' + digits;
+                                if (!state.usedCombinations.includes(comboKey)) {
+                                    isBonus = true;
+                                    bonusMult *= 10;
+                                    bonusMsg += ' Все цифры одинаковые! ×10';
+                                    state.usedCombinations.push(comboKey);
+                                }
+                            } else if (digits === '021') {
+                                comboKey = 'digits_021';
+                                if (!state.usedCombinations.includes(comboKey)) {
+                                    isBonus = true;
+                                    bonusMult *= 21;
+                                    bonusMsg += ' Комбинация 021! ×21';
+                                    state.usedCombinations.push(comboKey);
+                                }
+                            } else if (digits === '067') {
+                                comboKey = 'digits_067';
+                                if (!state.usedCombinations.includes(comboKey)) {
+                                    isBonus = true;
+                                    bonusMult *= 67;
+                                    bonusMsg += ' Комбинация 067! ×67';
+                                    state.usedCombinations.push(comboKey);
+                                }
+                            }
 
-                        const letters = state.firstLetter + state.twoLetters;
-                        if (letters[0] === letters[1] && letters[1] === letters[2]) {
-                            bonusMult *= 10;
-                            bonusMsg += ' Все буквы одинаковые! ×10';
-                        }
+                            if (letters[0] === letters[1] && letters[1] === letters[2]) {
+                                comboKey = 'letters_same_' + letters;
+                                if (!state.usedCombinations.includes(comboKey)) {
+                                    isBonus = true;
+                                    bonusMult *= 10;
+                                    bonusMsg += ' Все буквы одинаковые! ×10';
+                                    state.usedCombinations.push(comboKey);
+                                }
+                            }
 
-                        if (bonusMult > 1) {
-                            reward = Math.floor(reward * bonusMult);
-                            showNotification('🎰 Бонус!' + bonusMsg + ' Награда ×' + bonusMult, 'success');
+                            if (isBonus && bonusMult > 1) {
+                                reward = Math.floor(reward * bonusMult);
+                                showNotification('🎰 Бонус!' + bonusMsg + ' Награда ×' + bonusMult, 'success');
+                            }
                         }
 
                         state.spinCount += 1;
@@ -1684,8 +1835,23 @@
                         btn.disabled = false;
                         return;
                     }
-                    if (action === 'digits') state.digits = randomDigits();
-                    else { state.firstLetter = randomFirstLetter(); state.twoLetters = randomTwoLetters(); }
+                    if (action === 'digits') {
+                        if (state.guaranteedDigits !== null) {
+                            state.digits = state.guaranteedDigits;
+                        } else {
+                            state.digits = getRandomDigitsWithLuck();
+                        }
+                    } else {
+                        if (state.guaranteedLetters !== null) {
+                            const letters = state.guaranteedLetters;
+                            state.firstLetter = letters[0];
+                            state.twoLetters = letters[1] + letters[2];
+                        } else {
+                            const lettersResult = getRandomLettersWithLuck();
+                            state.firstLetter = lettersResult.first;
+                            state.twoLetters = lettersResult.two;
+                        }
+                    }
                     updateUI();
                     playSpinTick();
                     setTimeout(animate, tickInterval);
@@ -1693,7 +1859,6 @@
                 animate();
             }
 
-            // ---------- МАГАЗИН ----------
             function openShop() {
                 if (state.eventActive && state.eventType === 'shop_block') {
                     showNotification('🔒 Магазин заблокирован ивентом!', 'warning');
@@ -1740,6 +1905,25 @@
                 const income5Active = now < state.incomeEndTime && state.incomeMultiplier >= 5;
                 buyIncome5Btn.disabled = (income5Active && state.incomeMultiplier >= 5) || state.balance < effPriceIncome5;
                 buyIncome5Btn.textContent = (income5Active && state.incomeMultiplier >= 5) ? 'Активен' : 'Купить';
+
+                // Рамки
+                const basePrice = getEffectivePrice(10000 * Math.pow(2, state.extraSlots));
+                const totalSlots = 4 + state.extraSlots;
+                const maxSlots = 1000;
+                const canBuy1 = totalSlots < maxSlots && state.balance >= basePrice;
+                const canBuy10 = totalSlots + 10 <= maxSlots && state.balance >= basePrice * 10;
+                const canBuy100 = totalSlots + 100 <= maxSlots && state.balance >= basePrice * 100;
+
+                priceExtraSlot1.textContent = formatNumber(basePrice) + ' ₽';
+                priceExtraSlot10.textContent = formatNumber(basePrice * 10) + ' ₽';
+                priceExtraSlot100.textContent = formatNumber(basePrice * 100) + ' ₽';
+
+                buyExtraSlot1Btn.disabled = !canBuy1;
+                buyExtraSlot1Btn.textContent = (totalSlots >= maxSlots) ? 'Максимум' : 'Купить';
+                buyExtraSlot10Btn.disabled = !canBuy10;
+                buyExtraSlot10Btn.textContent = (totalSlots >= maxSlots) ? 'Максимум' : 'Купить';
+                buyExtraSlot100Btn.disabled = !canBuy100;
+                buyExtraSlot100Btn.textContent = (totalSlots >= maxSlots) ? 'Максимум' : 'Купить';
             }
 
             function activateBoost(multiplier, price, name) {
@@ -1804,10 +1988,34 @@
             buyIncome2Btn.addEventListener('click', function() {
                 activateIncome(2, 60 * 1000, 100000, 'Удвоение дохода на 1 минуту');
             });
-
             buyIncome5Btn.addEventListener('click', function() {
                 activateIncome(5, 5 * 60 * 1000, 10000000, 'Увеличение дохода ×5 на 5 минут');
             });
+
+            function buyExtraSlots(count) {
+                const totalSlots = 4 + state.extraSlots;
+                if (totalSlots + count > 1000) {
+                    showNotification('❌ Достигнут лимит в 1000 рамок!', 'warning');
+                    return;
+                }
+                const basePrice = getEffectivePrice(10000 * Math.pow(2, state.extraSlots));
+                const totalCost = basePrice * count;
+                if (state.balance < totalCost) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return;
+                }
+                state.balance -= totalCost;
+                state.extraSlots += count;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('🖼️ Добавлено ' + count + ' рамок! Всего слотов: ' + (4 + state.extraSlots), 'success');
+                closeShop();
+            }
+
+            buyExtraSlot1Btn.addEventListener('click', function() { buyExtraSlots(1); });
+            buyExtraSlot10Btn.addEventListener('click', function() { buyExtraSlots(10); });
+            buyExtraSlot100Btn.addEventListener('click', function() { buyExtraSlots(100); });
 
             closeShopBtn.addEventListener('click', closeShop);
             shopModal.addEventListener('click', function(e) {
@@ -1815,7 +2023,6 @@
             });
             shopBtn.addEventListener('click', openShop);
 
-            // ---------- ПРОМОКОДЫ ----------
             applyPromoBtn.addEventListener('click', function() {
                 const code = promoInputShop.value.trim().toUpperCase();
                 promoInputShop.value = '';
@@ -1828,30 +2035,55 @@
                 let msg = '';
 
                 if (code === '212121') {
-                    if (state.usedPromoCodes.includes('212121')) {
-                        msg = '❌ Этот промокод уже использован';
-                    } else {
-                        state.balance += 1000000000000;
-                        state.usedPromoCodes.push('212121');
-                        success = true;
-                        msg = '✅ +1 000 000 000 000 ₽!';
-                    }
+                    state.balance += 1000000000000;
+                    success = true;
+                    msg = '✅ +1 000 000 000 000 ₽!';
                 }
-                else if (code === '21') {
-                    if (state.usedPromoCodes.includes('21')) {
-                        msg = '❌ Этот промокод уже использован';
-                    } else {
-                        if (state.boostMultiplier >= 21 && Date.now() < state.boostEndTime) {
-                            msg = '❌ Уже активен более сильный бафф!';
-                        } else {
-                            state.boostMultiplier = 21;
-                            state.boostEndTime = Date.now() + 60 * 1000;
-                            state.usedPromoCodes.push('21');
-                            success = true;
-                            msg = '✅ Буст ×21 активирован на 1 минуту!';
-                        }
-                    }
-                } else {
+                else if (code === '067') {
+                    state.guaranteedDigits = '067';
+                    success = true;
+                    msg = '✅ Гарантирован выпад 067 при следующей прокрутке цифр!';
+                }
+                else if (code === '021') {
+                    state.guaranteedDigits = '021';
+                    success = true;
+                    msg = '✅ Гарантирован выпад 021 при следующей прокрутке цифр!';
+                }
+                else if (code === 'ЦИФРЫ2167') {
+                    const digit = Math.floor(Math.random() * 10);
+                    state.guaranteedDigits = String(digit).repeat(3);
+                    success = true;
+                    msg = '✅ Гарантированы одинаковые цифры (' + state.guaranteedDigits + ') при следующей прокрутке!';
+                }
+                else if (code === 'БУКВЫ21') {
+                    const letter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                    state.guaranteedLetters = letter + letter + letter;
+                    success = true;
+                    msg = '✅ Гарантированы одинаковые буквы (' + state.guaranteedLetters + ') при следующей прокрутке!';
+                }
+                else if (code === 'О000ОО') {
+                    state.guaranteedDigits = '000';
+                    state.guaranteedLetters = 'ООО';
+                    success = true;
+                    msg = '✅ Гарантирован номер О000ОО при следующей прокрутке!';
+                }
+                else if (code === 'RESET21') {
+                    state.casinoBoosted = false;
+                    state.casinoBoostLastTime = 0;
+                    success = true;
+                    msg = '✅ Таймер повышения шансов в казино сброшен!';
+                }
+                else if (code === 'PANDA21') {
+                    state.guaranteedExclusive = 'ПАНДА21';
+                    success = true;
+                    msg = '✅ При следующей прокрутке гарантированно выпадет ПАНДА21!';
+                }
+                else if (code === 'LOX21') {
+                    state.guaranteedExclusive = 'ЛОХ';
+                    success = true;
+                    msg = '✅ При следующей прокрутке гарантированно выпадет ЛОХ!';
+                }
+                else {
                     msg = '❌ Неизвестный промокод';
                 }
 
@@ -1866,7 +2098,6 @@
                 updateUI();
             });
 
-            // ---------- КАЗИНО ----------
             function openCasino() {
                 if (!state.ageConfirmed) {
                     ageModal.classList.add('open');
@@ -1915,7 +2146,50 @@
                 casinoBetsLeft.textContent = left;
                 casinoSpinBtn.disabled = (left <= 0);
                 if (parseInt(casinoBetInput.value) > state.balance) casinoBetInput.value = state.balance;
+
+                const canBoost = !state.casinoBoosted && (now - state.casinoBoostLastTime >= 3600000);
+                if (state.casinoBoosted) {
+                    casinoOddsDisplay.textContent = '🎲 Шансы: Зелёный (×1000) — 2%, Белый (×100) — 15%, Жёлтый (×10) — 18%, Красный (×2) — 30%, Чёрный (0) — 35%';
+                    casinoBoostBtn.textContent = '🔥 Шансы повышены (активно)';
+                    casinoBoostBtn.disabled = true;
+                } else {
+                    casinoOddsDisplay.textContent = '🎲 Шансы: Зелёный (×1000) — 0.01%, Белый (×100) — 0.1%, Жёлтый (×10) — 1%, Красный (×2) — 28.9%, Чёрный (0) — 70%';
+                    if (canBoost && state.balance > 0) {
+                        casinoBoostBtn.textContent = '🔥 ПОВЫСИТЬ ШАНСЫ (50% баланса)';
+                        casinoBoostBtn.disabled = false;
+                    } else {
+                        if (now - state.casinoBoostLastTime < 3600000) {
+                            const remaining = Math.ceil((3600000 - (now - state.casinoBoostLastTime)) / 60000);
+                            casinoBoostBtn.textContent = `⏳ Доступно через ${remaining} мин`;
+                        } else {
+                            casinoBoostBtn.textContent = '🔥 Недостаточно средств';
+                        }
+                        casinoBoostBtn.disabled = true;
+                    }
+                }
             }
+
+            casinoBoostBtn.addEventListener('click', function() {
+                if (state.casinoBoosted) return;
+                const now = Date.now();
+                if (now - state.casinoBoostLastTime < 3600000) {
+                    showNotification('❌ Повышение доступно раз в час!', 'warning');
+                    return;
+                }
+                const cost = Math.floor(state.balance / 2);
+                if (cost <= 0) {
+                    showNotification('❌ Недостаточно средств для повышения!', 'error');
+                    return;
+                }
+                state.balance -= cost;
+                state.casinoBoosted = true;
+                state.casinoBoostLastTime = now;
+                saveState();
+                updateUI();
+                updateCasinoUI();
+                playClick();
+                showNotification('🔥 Шансы повышены на одну прокрутку!', 'success');
+            });
 
             casinoSpinBtn.addEventListener('click', function() {
                 const now = Date.now();
@@ -1937,12 +2211,23 @@
                     return;
                 }
 
-                const rand = Math.random();
+                let rand = Math.random();
                 let result = '', multiplier = 0;
-                if (rand < 0.001) { result = 'белый'; multiplier = 100; }
-                else if (rand < 0.011) { result = 'жёлтый'; multiplier = 10; }
-                else if (rand < 0.300) { result = 'красный'; multiplier = 2; }
-                else { result = 'чёрный'; multiplier = 0; }
+                if (state.casinoBoosted) {
+                    if (rand < 0.02) { result = 'зелёный'; multiplier = 1000; }
+                    else if (rand < 0.17) { result = 'белый'; multiplier = 100; }
+                    else if (rand < 0.35) { result = 'жёлтый'; multiplier = 10; }
+                    else if (rand < 0.65) { result = 'красный'; multiplier = 2; }
+                    else { result = 'чёрный'; multiplier = 0; }
+                    state.casinoBoosted = false;
+                    state.casinoBoostLastTime = Date.now();
+                } else {
+                    if (rand < 0.0001) { result = 'зелёный'; multiplier = 1000; }
+                    else if (rand < 0.0011) { result = 'белый'; multiplier = 100; }
+                    else if (rand < 0.0111) { result = 'жёлтый'; multiplier = 10; }
+                    else if (rand < 0.3000) { result = 'красный'; multiplier = 2; }
+                    else { result = 'чёрный'; multiplier = 0; }
+                }
 
                 state.casinoBetsThisHour++;
                 state.casinoLastBetTime = now;
@@ -1952,21 +2237,22 @@
                 if (multiplier > 0) {
                     winAmount = bet * multiplier;
                     state.balance += winAmount;
-                    if (result === 'жёлтый') {
+                    if (result === 'зелёный') {
+                        showNotification('🍀 Вам выпал зелёный! ДЖЕКПОТ!', 'success');
+                    } else if (result === 'жёлтый') {
                         showNotification('🍀 Вам выпал жёлтый! Поздравляем!', 'success');
-                    }
-                    if (result === 'белый') {
+                    } else if (result === 'белый') {
                         showNotification('🎉 Вам выпал белый! Поздравляем!', 'success');
                     }
                     msg = `🎉 Выпал ${result}! Вы выиграли ${formatNumber(winAmount)} ₽!`;
-                    if (multiplier === 100) msg += ' 🌟 ДЖЕКПОТ!';
+                    if (multiplier === 1000) msg += ' 🌟 ДЖЕКПОТ!';
                     playClick();
                 } else {
                     state.balance -= bet;
                     msg = `💀 Выпал ${result}! Вы проиграли ${formatNumber(bet)} ₽.`;
                 }
 
-                casinoResultArea.innerHTML = `<div class="casino-result ${multiplier > 0 ? (multiplier === 100 ? 'jackpot' : 'win') : 'lose'}">${msg}</div>`;
+                casinoResultArea.innerHTML = `<div class="casino-result ${multiplier > 0 ? (multiplier === 1000 ? 'jackpot' : 'win') : 'lose'}">${msg}</div>`;
                 saveState();
                 updateUI();
                 updateCasinoUI();
@@ -1979,7 +2265,6 @@
             });
             casinoBtn.addEventListener('click', openCasino);
 
-            // ---------- ПРОКАЧКА ----------
             function openUpgrade() {
                 playClick();
                 upgradeModal.classList.add('open');
@@ -2001,12 +2286,32 @@
                 const canBuy4 = (level === 3) && state.balance >= 21000000000;
                 buyUpgrade4Btn.disabled = !canBuy4 || level < 3 || level >= 4;
                 buyUpgrade4Btn.textContent = (level >= 4) ? 'Куплено' : 'Купить';
+                const canBuy5 = (level === 4) && state.balance >= 1000000000000;
+                buyUpgrade5Btn.disabled = !canBuy5 || level < 4 || level >= 5;
+                buyUpgrade5Btn.textContent = (level >= 5) ? 'Куплено' : 'Купить';
+                const canBuy6 = (level === 5) && state.balance >= 100000000000000;
+                buyUpgrade6Btn.disabled = !canBuy6 || level < 5 || level >= 6;
+                buyUpgrade6Btn.textContent = (level >= 6) ? 'Куплено' : 'Купить';
 
-                // ИКС2 НАГРАДА
                 const doublePrice = getEffectivePrice(5000000);
                 priceDoubleReward.textContent = formatNumber(doublePrice) + ' ₽';
                 buyDoubleRewardBtn.disabled = state.doubleReward || state.balance < doublePrice;
                 buyDoubleRewardBtn.textContent = state.doubleReward ? 'Куплено' : 'Купить';
+
+                const x5Price = getEffectivePrice(100000000);
+                priceX5Reward.textContent = formatNumber(x5Price) + ' ₽';
+                buyX5RewardBtn.disabled = state.rewardX5 || state.balance < x5Price;
+                buyX5RewardBtn.textContent = state.rewardX5 ? 'Куплено' : 'Купить';
+
+                const x10Price = getEffectivePrice(10000000000);
+                priceX10Reward.textContent = formatNumber(x10Price) + ' ₽';
+                buyX10RewardBtn.disabled = state.rewardX10 || state.balance < x10Price;
+                buyX10RewardBtn.textContent = state.rewardX10 ? 'Куплено' : 'Купить';
+
+                const x100Price = getEffectivePrice(10000000000000000);
+                priceX100Reward.textContent = formatNumber(x100Price) + ' ₽';
+                buyX100RewardBtn.disabled = state.rewardX100 || state.balance < x100Price;
+                buyX100RewardBtn.textContent = state.rewardX100 ? 'Куплено' : 'Купить';
             }
 
             buyUpgrade1Btn.addEventListener('click', function() {
@@ -2060,6 +2365,32 @@
                 closeUpgrade();
             });
 
+            buyUpgrade5Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 5) { playClick(); return; }
+                if (state.rewardLevel < 4) { showNotification('❌ Сначала купите предыдущий уровень!', 'warning'); return; }
+                if (state.balance < 1000000000000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 1000000000000;
+                state.rewardLevel = 5;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 1 000 000 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
+            buyUpgrade6Btn.addEventListener('click', function() {
+                if (state.rewardLevel >= 6) { playClick(); return; }
+                if (state.rewardLevel < 5) { showNotification('❌ Сначала купите предыдущий уровень!', 'warning'); return; }
+                if (state.balance < 100000000000000) { showNotification('❌ Недостаточно средств!', 'error'); return; }
+                state.balance -= 100000000000000;
+                state.rewardLevel = 6;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('📈 Награда за прокрут увеличена до 10 000 000 000 ₽!', 'success');
+                closeUpgrade();
+            });
+
             buyDoubleRewardBtn.addEventListener('click', function() {
                 if (state.doubleReward) { playClick(); return; }
                 const price = getEffectivePrice(5000000);
@@ -2076,13 +2407,60 @@
                 closeUpgrade();
             });
 
+            buyX5RewardBtn.addEventListener('click', function() {
+                if (state.rewardX5) { playClick(); return; }
+                const price = getEffectivePrice(100000000);
+                if (state.balance < price) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return;
+                }
+                state.balance -= price;
+                state.rewardX5 = true;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('✖️5 ИКС5 НАГРАДА активирована постоянно!', 'success');
+                closeUpgrade();
+            });
+
+            buyX10RewardBtn.addEventListener('click', function() {
+                if (state.rewardX10) { playClick(); return; }
+                const price = getEffectivePrice(10000000000);
+                if (state.balance < price) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return;
+                }
+                state.balance -= price;
+                state.rewardX10 = true;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('✖️10 ИКС10 НАГРАДА активирована постоянно!', 'success');
+                closeUpgrade();
+            });
+
+            buyX100RewardBtn.addEventListener('click', function() {
+                if (state.rewardX100) { playClick(); return; }
+                const price = getEffectivePrice(10000000000000000);
+                if (state.balance < price) {
+                    showNotification('❌ Недостаточно средств!', 'error');
+                    return;
+                }
+                state.balance -= price;
+                state.rewardX100 = true;
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('✖️100 ИКС100 НАГРАДА активирована постоянно!', 'success');
+                closeUpgrade();
+            });
+
             closeUpgradeBtn.addEventListener('click', closeUpgrade);
             upgradeModal.addEventListener('click', function(e) {
                 if (e.target === upgradeModal) closeUpgrade();
             });
             upgradeBtn.addEventListener('click', openUpgrade);
 
-            // ---------- ИВЕНТЫ ----------
             function openEvents() {
                 playClick();
                 eventsModal.classList.add('open');
@@ -2101,7 +2479,8 @@
                     'anti_spin': '🐢 Анти-прокрут',
                     'crash': '💥 Сбой',
                     'tsunami': '🌊 Цунами Рублей',
-                    'all_events': '🎉 ВСЕ ИВЕНТЫ'
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ',
+                    'combo_luck': '🎲 ВЕЗЕНИЕ КОМБИНАЦИЙ'
                 };
                 if (state.eventActive) {
                     const remaining = Math.max(0, Math.ceil((state.eventEndTime - now) / 1000));
@@ -2116,32 +2495,24 @@
             }
 
             function startRandomEvent() {
-                // Список всех ивентов, кроме 'all_events'
                 const eventTypes = ['rain', 'discount', 'anti', 'tornado', 'shop_block', 'anti_spin', 'crash', 'tsunami'];
                 let chosenType;
                 const rand = Math.random();
                 if (rand < 0.01) {
                     chosenType = 'all_events';
+                } else if (rand < 0.06) {
+                    chosenType = 'combo_luck';
                 } else {
-                    chosenType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+                    const remaining = 0.94;
+                    const step = remaining / 8;
+                    const idx = Math.floor((rand - 0.06) / step);
+                    chosenType = eventTypes[Math.min(idx, eventTypes.length - 1)];
                 }
 
                 state.eventActive = true;
                 state.eventType = chosenType;
                 state.eventEndTime = Date.now() + 60 * 1000;
                 state.eventMultiplier = 1;
-
-                // Если выпал all_events, активируем все эффекты
-                if (chosenType === 'all_events') {
-                    // Мы просто установим флаг, но реально эффекты будут работать через обычную логику
-                    // Так как каждый ивент имеет свой эффект, мы можем просто включить все типы одновременно.
-                    // Но проще: установим eventType = 'all_events' и в функциях будем проверять этот тип.
-                    // Для упрощения оставим как есть, но логика начисления награды будет проверять этот тип.
-                    // Чтобы не усложнять, мы просто установим флаг, а в getBaseSpinReward будем проверять.
-                    // Но нам нужно также применить все эффекты: +50%, +3x, +10x, скидка, антискидка, блокировка, анти-прокрут, сбой.
-                    // Вместо этого мы в коде везде, где проверяется eventType, добавим проверку на 'all_events' и будем считать, что все активны.
-                    // Это самый простой способ.
-                }
 
                 saveState();
                 updateUI();
@@ -2154,7 +2525,8 @@
                     'anti_spin': '🐢 Анти-прокрут (вращение в 5 раз медленнее)',
                     'crash': '💥 Сбой (все баффы отключены)',
                     'tsunami': '🌊 Цунами Рублей (×10 дохода)',
-                    'all_events': '🎉 ВСЕ ИВЕНТЫ (все эффекты одновременно)'
+                    'all_events': '🎉 ВСЕ ИВЕНТЫ (все эффекты одновременно)',
+                    'combo_luck': '🎲 ВЕЗЕНИЕ КОМБИНАЦИЙ (увеличен шанс одинаковых цифр/букв)'
                 };
                 showNotification('🎪 Начался ивент: ' + names[chosenType] + ' на 1 минуту!', 'info');
                 setTimeout(() => {
@@ -2193,7 +2565,6 @@
             });
             eventsBtn.addEventListener('click', openEvents);
 
-            // ---------- РАМКИ ----------
             function openFrames() {
                 playClick();
                 framesModal.classList.add('open');
@@ -2201,42 +2572,110 @@
             }
             function closeFrames() { framesModal.classList.remove('open'); }
 
+            // Функция прокачки рамки
+            function upgradeFrame(index) {
+                const slot = state.savedNumbers[index];
+                if (!slot || (!slot.firstLetter && !slot.exclusiveType)) {
+                    showNotification('❌ Слот пуст.', 'warning');
+                    return;
+                }
+                const currentIncome = getFrameIncome(slot);
+                const price = currentIncome * 1000;
+                if (state.balance < price) {
+                    showNotification('❌ Недостаточно средств! Нужно ' + formatNumber(price) + ' ₽', 'error');
+                    return;
+                }
+                state.balance -= price;
+                slot.level = (slot.level || 0) + 1;
+                saveState();
+                renderFrames();
+                updateUI();
+                playClick();
+                showNotification('🔧 Рамка прокачана до уровня ' + slot.level + '!', 'success');
+            }
+
             function renderFrames() {
                 frameSlotsContainer.innerHTML = '';
+                const totalSlots = 4 + state.extraSlots;
                 const slots = state.savedNumbers;
-                for (let i = 0; i < 4; i++) {
-                    const slot = slots[i];
+                while (slots.length < totalSlots) {
+                    slots.push({});
+                }
+                for (let i = 0; i < totalSlots; i++) {
+                    const slot = slots[i] || {};
                     const div = document.createElement('div');
-                    div.className = 'frame-slot' + (slot.firstLetter ? ' filled' : '');
-                    if (slot.firstLetter) {
+                    div.className = 'frame-slot' + ((slot.firstLetter || slot.exclusiveType) ? ' filled' : '');
+                    if (slot.exclusiveType) {
+                        const displayName = slot.exclusiveType === 'LOH' ? 'ЛОХ' : 'ПАНДА21';
+                        const income = getFrameIncome(slot);
+                        const level = slot.level || 0;
+                        const price = income * 1000;
+                        div.innerHTML = `
+                            <div class="slot-number">${displayName}</div>
+                            <div class="slot-region">⭐ Эксклюзив</div>
+                            <div class="slot-income">💰 +${formatNumber(income)} ₽/с</div>
+                            <div class="slot-level">Уровень: ${level}</div>
+                            <div class="slot-actions">
+                                <button class="danger" data-action="remove" data-index="${i}">🗑️ Удалить</button>
+                                <button class="success" data-action="apply" data-index="${i}">✅ Применить</button>
+                                <button data-action="move" data-index="${i}">📦 Переместить</button>
+                                <button class="upgrade" data-action="upgrade" data-index="${i}">🔧 (${formatNumber(price)} ₽)</button>
+                            </div>
+                        `;
+                    } else if (slot.firstLetter) {
                         const full = slot.firstLetter + slot.digits + slot.twoLetters;
-                        const income = getFrameIncome(slot.firstLetter, slot.digits, slot.twoLetters);
+                        const income = getFrameIncome(slot);
+                        const level = slot.level || 0;
+                        const price = income * 1000;
                         div.innerHTML = `
                             <div class="slot-number">${full}</div>
                             <div class="slot-region">${slot.region || '77'} 🇷🇺</div>
-                            <div class="slot-income">💰 +${income} ₽/с</div>
+                            <div class="slot-income">💰 +${formatNumber(income)} ₽/с</div>
+                            <div class="slot-level">Уровень: ${level}</div>
                             <div class="slot-actions">
                                 <button class="danger" data-action="remove" data-index="${i}">🗑️ Удалить</button>
+                                <button class="success" data-action="apply" data-index="${i}">✅ Применить</button>
                                 <button data-action="move" data-index="${i}">📦 Переместить</button>
+                                <button class="upgrade" data-action="upgrade" data-index="${i}">🔧 (${formatNumber(price)} ₽)</button>
                             </div>
                         `;
-                        // Обработчики событий через делегирование
-                        const removeBtn = div.querySelector('[data-action="remove"]');
-                        removeBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            removeFromFrame(i);
-                        });
-                        const moveBtn = div.querySelector('[data-action="move"]');
-                        moveBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            moveFrame(i);
-                        });
                     } else {
                         div.innerHTML = `
                             <div class="empty-slot">Пусто</div>
                             <button class="save-current-btn" data-index="${i}">💾 Сохранить текущий</button>
                         `;
-                        const saveBtn = div.querySelector('.save-current-btn');
+                    }
+                    // Обработчики
+                    const removeBtn = div.querySelector('[data-action="remove"]');
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            removeFromFrame(i);
+                        });
+                    }
+                    const applyBtn = div.querySelector('[data-action="apply"]');
+                    if (applyBtn) {
+                        applyBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            applyFrame(i);
+                        });
+                    }
+                    const moveBtn = div.querySelector('[data-action="move"]');
+                    if (moveBtn) {
+                        moveBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            moveFrame(i);
+                        });
+                    }
+                    const upgradeBtn = div.querySelector('[data-action="upgrade"]');
+                    if (upgradeBtn) {
+                        upgradeBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            upgradeFrame(i);
+                        });
+                    }
+                    const saveBtn = div.querySelector('.save-current-btn');
+                    if (saveBtn) {
                         saveBtn.addEventListener('click', function(e) {
                             e.stopPropagation();
                             saveToFrame(i);
@@ -2244,19 +2683,25 @@
                     }
                     frameSlotsContainer.appendChild(div);
                 }
+                if (totalSlotsDisplay) totalSlotsDisplay.textContent = totalSlots;
             }
 
             function saveToFrame(index) {
-                // Проверяем, занят ли слот
-                if (state.savedNumbers[index].firstLetter) {
+                if (state.savedNumbers[index] && (state.savedNumbers[index].firstLetter || state.savedNumbers[index].exclusiveType)) {
                     if (!confirm('Слот занят. Заменить его?')) return;
                 }
-                state.savedNumbers[index] = {
-                    firstLetter: state.firstLetter,
-                    digits: state.digits,
-                    twoLetters: state.twoLetters,
-                    region: state.region
-                };
+                if (state.exclusiveNumber) {
+                    const type = state.exclusiveNumber === 'ЛОХ' ? 'LOH' : 'PANDA21';
+                    state.savedNumbers[index] = { exclusiveType: type, level: 0 };
+                } else {
+                    state.savedNumbers[index] = {
+                        firstLetter: state.firstLetter,
+                        digits: state.digits,
+                        twoLetters: state.twoLetters,
+                        region: state.region,
+                        level: 0
+                    };
+                }
                 saveState();
                 renderFrames();
                 updateUI();
@@ -2265,7 +2710,7 @@
             }
 
             function removeFromFrame(index) {
-                if (!state.savedNumbers[index].firstLetter) return;
+                if (!state.savedNumbers[index] || (!state.savedNumbers[index].firstLetter && !state.savedNumbers[index].exclusiveType)) return;
                 if (!confirm('Удалить номер из рамки?')) return;
                 state.savedNumbers[index] = {};
                 saveState();
@@ -2276,11 +2721,10 @@
             }
 
             function moveFrame(index) {
-                // Показать диалог выбора слота для перемещения
                 const slots = state.savedNumbers;
                 let available = [];
-                for (let i = 0; i < 4; i++) {
-                    if (i !== index && !slots[i].firstLetter) {
+                for (let i = 0; i < slots.length; i++) {
+                    if (i !== index && (!slots[i] || (!slots[i].firstLetter && !slots[i].exclusiveType))) {
                         available.push(i);
                     }
                 }
@@ -2288,15 +2732,13 @@
                     showNotification('❌ Нет свободных слотов для перемещения.', 'warning');
                     return;
                 }
-                // Создаём простой диалог выбора
-                const choice = prompt('Введите номер слота (1-4) для перемещения (свободные: ' + available.map(i => i+1).join(', ') + ')');
+                const choice = prompt('Введите номер слота (1-' + slots.length + ') для перемещения (свободные: ' + available.map(i => i+1).join(', ') + ')');
                 if (choice === null) return;
                 const target = parseInt(choice) - 1;
-                if (isNaN(target) || target < 0 || target > 3 || target === index || slots[target].firstLetter) {
+                if (isNaN(target) || target < 0 || target >= slots.length || target === index || (slots[target] && (slots[target].firstLetter || slots[target].exclusiveType))) {
                     showNotification('❌ Неверный слот.', 'error');
                     return;
                 }
-                // Перемещаем
                 slots[target] = slots[index];
                 slots[index] = {};
                 saveState();
@@ -2306,13 +2748,36 @@
                 showNotification('📦 Номер перемещён в слот ' + (target+1), 'success');
             }
 
+            function applyFrame(index) {
+                const slot = state.savedNumbers[index];
+                if (!slot || (!slot.firstLetter && !slot.exclusiveType)) {
+                    showNotification('❌ Слот пуст.', 'warning');
+                    return;
+                }
+                if (slot.exclusiveType) {
+                    state.exclusiveNumber = slot.exclusiveType === 'LOH' ? 'ЛОХ' : 'ПАНДА21';
+                    state.firstLetter = 'А';
+                    state.digits = '123';
+                    state.twoLetters = 'ВС';
+                } else {
+                    state.firstLetter = slot.firstLetter;
+                    state.digits = slot.digits;
+                    state.twoLetters = slot.twoLetters;
+                    if (slot.region) state.region = slot.region;
+                    state.exclusiveNumber = null;
+                }
+                saveState();
+                updateUI();
+                playClick();
+                showNotification('✅ Номер из рамки применён!', 'success');
+            }
+
             closeFramesBtn.addEventListener('click', closeFrames);
             framesModal.addEventListener('click', function(e) {
                 if (e.target === framesModal) closeFrames();
             });
             framesBtn.addEventListener('click', openFrames);
 
-            // ---------- НАСТРОЙКИ ----------
             function openSettings() {
                 playClick();
                 settingsModal.classList.add('open');
@@ -2393,7 +2858,20 @@
                     state.soundVolume = 100;
                     state.musicVolume = 100;
                     state.doubleReward = false;
+                    state.extraSlots = 0;
                     state.savedNumbers = [{}, {}, {}, {}];
+                    state.usedCombinations = [];
+                    state.casinoBoosted = false;
+                    state.casinoBoostLastTime = 0;
+                    state.rewardX5 = false;
+                    state.rewardX10 = false;
+                    state.rewardX100 = false;
+                    state.guaranteedDigits = null;
+                    state.guaranteedLetters = null;
+                    state.exclusiveNumber = null;
+                    state.lohCount = 0;
+                    state.pandaUsed = false;
+                    state.guaranteedExclusive = null;
                     generateInitialNumber();
                     saveState();
                     updateUI();
@@ -2409,11 +2887,9 @@
             });
             settingsBtn.addEventListener('click', openSettings);
 
-            // ---------- ОСНОВНЫЕ КНОПКИ ----------
             spinLettersBtn.addEventListener('click', function() { playClick(); performSpin('letters'); });
             spinDigitsBtn.addEventListener('click', function() { playClick(); performSpin('digits'); });
 
-            // ---------- ПАССИВНЫЙ ДОХОД ОТ РАМОК ----------
             let framesIncomeInterval = setInterval(() => {
                 const income = getTotalFramesIncome();
                 if (income > 0) {
@@ -2423,7 +2899,6 @@
                 }
             }, 1000);
 
-            // ---------- ИНИЦИАЛИЗАЦИЯ ----------
             function init() {
                 REGIONS.forEach(r => {
                     const opt = document.createElement('option');
@@ -2451,6 +2926,19 @@
                     state.musicVolume = 100;
                     state.savedNumbers = [{}, {}, {}, {}];
                     state.doubleReward = false;
+                    state.extraSlots = 0;
+                    state.usedCombinations = [];
+                    state.casinoBoosted = false;
+                    state.casinoBoostLastTime = 0;
+                    state.rewardX5 = false;
+                    state.rewardX10 = false;
+                    state.rewardX100 = false;
+                    state.guaranteedDigits = null;
+                    state.guaranteedLetters = null;
+                    state.exclusiveNumber = null;
+                    state.lohCount = 0;
+                    state.pandaUsed = false;
+                    state.guaranteedExclusive = null;
                 }
 
                 applyTheme(state.theme);
@@ -2458,7 +2946,6 @@
 
                 if (state.musicEnabled) startMusic();
 
-                // Восстановление ивентов
                 if (state.eventActive) {
                     const now = Date.now();
                     if (state.eventEndTime > now) {
@@ -2499,7 +2986,6 @@
                     }
                 }
 
-                // Периодическое обновление UI
                 setInterval(() => { updateUI(); }, 2000);
 
                 window.addEventListener('beforeunload', function() { saveState(); });
